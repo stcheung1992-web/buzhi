@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>不止建筑 AMPERSAND Studio</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            user-select: none;
+        }
+        html, body {
+            height: 100vh;
+            width: 100vw;
+            overflow: hidden;
+            background-color: #ffffff;
+            color: #000000;
+            font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", "PingFang SC", "Microsoft YaHei", sans-serif;
+            font-size: 13px;
+            line-height: 1.5;
+        }
+        /* 细黑线建筑网格 */
+        .border-grid {
+            border-color: #000000;
+        }
+        .custom-scroll::-webkit-scrollbar {
+            width: 3px;
+        }
+        .custom-scroll::-webkit-scrollbar-thumb {
+            background: #000000;
+        }
+        .custom-scroll {
+            -ms-overflow-style: auto;
+            scrollbar-width: thin;
+        }
+        /* 项目激活状态：黑底白字高亮反显 */
+        .project-item.active {
+            background-color: #000000 !important;
+            color: #ffffff !important;
+        }
+        .project-item.active span {
+            color: #ffffff !important;
+        }
+        /* 缩略图激活态 */
+        .thumb-btn.active {
+            border-color: #000000 !important;
+            opacity: 1 !important;
+        }
+    </style>
+</head>
+<body class="flex flex-col h-screen w-screen overflow-hidden">
+
+    <!-- ================= 顶部信息与索引导航仪表盘 (红框区域) ================= -->
+    <header class="w-full shrink-0 border-b-2 border-black grid grid-cols-12 text-xs divide-x divide-black bg-white z-20">
+        
+        <!-- 0. 品牌 LOGO 列 -->
+        <div class="col-span-12 md:col-span-2 p-3 flex flex-col justify-between">
+            <div class="flex items-center space-x-2">
+                <img src="LOGO.png" onerror="this.onerror=null; this.src='LOGO.jpg'; this.onerror=()=>this.style.display='none';" class="h-8 w-auto object-contain" alt="LOGO">
+                <div>
+                    <div class="font-black tracking-[0.25em] text-base leading-none">AMPERSAND</div>
+                    <div class="text-[10px] tracking-widest text-neutral-500 font-light mt-0.5">不止建筑</div>
+                </div>
+            </div>
+            <div class="text-[10px] text-neutral-500 mt-2 font-mono leading-tight">
+                杭州 · 存量商业资产活化<br>
+                建筑 × 室内双重视角
+            </div>
+        </div>
+
+        <!-- 1. 关于与理念 -->
+        <div class="hidden md:block md:col-span-3 p-3 overflow-y-auto max-h-[140px] custom-scroll space-y-1 text-justify text-[11px] leading-relaxed">
+            <div class="font-bold flex justify-between items-center text-xs pb-1 border-b border-black mb-1">
+                <span>关于. / ABOUT</span>
+                <span class="font-mono text-[10px]">AMPERSAND</span>
+            </div>
+            <p>
+                不止建筑（AMPERSAND Studio）立足存量时代，致力于通过低成本高弹性的空间微干预、商业动线重组与在地文脉挖掘，消融宏观建筑结构与微观室内情绪的边界，重塑存量商业资产与城市微空间。
+            </p>
+        </div>
+
+        <!-- 2. 商业落地实践列表 (点击瞬间切换) -->
+        <div class="col-span-6 md:col-span-4 p-3 overflow-y-auto max-h-[140px] custom-scroll space-y-1">
+            <div class="font-bold flex justify-between items-center text-xs pb-1 border-b border-black mb-1">
+                <span>项目实践. / PRACTICE</span>
+                <span class="font-mono text-[10px]">[01-03]</span>
+            </div>
+            <div class="space-y-0.5 font-medium">
+                <button onclick="loadEntry('xinhu')" id="btn-xinhu" class="project-item active w-full text-left px-2 py-1 flex justify-between items-center hover:bg-neutral-100 transition-colors">
+                    <span class="truncate">01. 心湖之境：荒岛改造全时段微度假空间</span>
+                    <span class="text-[10px] font-mono shrink-0 ml-1 text-neutral-500">2026/文旅</span>
+                </button>
+                <button onclick="loadEntry('xinquji')" id="btn-xinquji" class="project-item w-full text-left px-2 py-1 flex justify-between items-center hover:bg-neutral-100 transition-colors">
+                    <span class="truncate">02. 新衢记：绍兴老破大商业低预算救活实录</span>
+                    <span class="text-[10px] font-mono shrink-0 ml-1 text-neutral-500">2026/餐饮</span>
+                </button>
+                <button onclick="loadEntry('liubai')" id="btn-liubai" class="project-item w-full text-left px-2 py-1 flex justify-between items-center hover:bg-neutral-100 transition-colors">
+                    <span class="truncate">03. 留白·艺术客厅：老花窖与绿色能源更新</span>
+                    <span class="text-[10px] font-mono shrink-0 ml-1 text-neutral-500">2026/策展</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- 3. 研究室 / 思考列表 -->
+        <div class="col-span-6 md:col-span-2 p-3 overflow-y-auto max-h-[140px] custom-scroll space-y-1">
+            <div class="font-bold flex justify-between items-center text-xs pb-1 border-b border-black mb-1">
+                <span>研究室. / LAB</span>
+                <span class="font-mono text-[10px]">[01-02]</span>
+            </div>
+            <div class="space-y-0.5 font-medium">
+                <button onclick="loadEntry('pingan')" id="btn-pingan" class="project-item w-full text-left px-2 py-1 flex justify-between items-center hover:bg-neutral-100 transition-colors">
+                    <span class="truncate">01. 平安大街城市切片与摩擦力</span>
+                    <span class="text-[10px] font-mono text-neutral-500">P1-P6</span>
+                </button>
+                <button onclick="loadEntry('topology')" id="btn-topology" class="project-item w-full text-left px-2 py-1 flex justify-between items-center hover:bg-neutral-100 transition-colors">
+                    <span class="truncate">02. 观念几何与轻量拓扑生成</span>
+                    <span class="text-[10px] font-mono text-neutral-500">Z1-Z6</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- 4. 主理人与合作 -->
+        <div class="hidden md:flex md:col-span-1 p-3 flex-col justify-between text-[11px]">
+            <div>
+                <div class="font-bold text-xs pb-1 border-b border-black mb-1">联络.</div>
+                <button onclick="loadEntry('about')" id="btn-about" class="project-item w-full text-left px-1.5 py-0.5 hover:bg-neutral-100 block font-medium">主理人游学</button>
+                <a href="mailto:contact@buzhi.studio" class="hover:underline text-[10px] block mt-1 font-mono">MAIL ➔</a>
+            </div>
+            <div class="text-[9px] font-mono text-neutral-400">©2026 BUZHI</div>
+        </div>
+
+    </header>
+
+    <!-- ================= 主视口区域 (左文右图 / 视口锁定不滚动) ================= -->
+    <main class="flex-1 w-full grid grid-cols-12 divide-x divide-black overflow-hidden relative">
+
+        <!-- 左侧：固定建筑叙事与参数区 (黄框区域) -->
+        <aside class="col-span-12 md:col-span-4 lg:col-span-3 p-6 md:p-8 overflow-y-auto custom-scroll bg-white flex flex-col justify-between space-y-6">
+            <div class="space-y-5">
+                <div class="space-y-1 border-b border-black pb-4">
+                    <div id="content-tag" class="text-[10px] font-mono tracking-widest text-neutral-500 uppercase">COMMERCIAL PRACTICE // 01</div>
+                    <h2 id="content-title" class="text-xl md:text-2xl font-bold tracking-tight text-black leading-snug">
+                        心湖之境：荒岛改造全时段滨水微度假空间
+                    </h2>
+                </div>
+
+                <!-- 叙事文本 -->
+                <div id="content-desc" class="text-neutral-700 text-xs md:text-[13px] leading-relaxed space-y-3 text-justify font-normal">
+                    <p>针对废置湖心岛屿的系统性活化策略。通过打通内外视线廊道、重塑滨水亭台与动线，将荒废场地重构为集日间微度假、品质餐饮与夜经济于一体的全时段复合场景。</p>
+                    <p>面对极低预算与生态敏感地块约束，设计采取了最克制的轻量化结构介入，消除了传统景区封闭建筑带来的阻隔感，重构了人与水体的亲密关系。</p>
+                </div>
+
+                <!-- 技术指标与项目信息表 -->
+                <div id="content-specs" class="pt-4 border-t border-dashed border-neutral-300 text-[11px] font-mono space-y-1.5 text-neutral-600">
+                    <div class="flex justify-between"><span>项目类型:</span><span class="text-black font-medium">文旅微度假 / 滨水商业更新</span></div>
+                    <div class="flex justify-between"><span>项目坐标:</span><span class="text-black font-medium">中国 · 汾湖</span></div>
+                    <div class="flex justify-between"><span>设计策略:</span><span class="text-black font-medium">全时段流线 / 低扰动轻介入</span></div>
+                    <div class="flex justify-between"><span>主持设计:</span><span class="text-black font-medium">松涛 Fred Cheung</span></div>
+                </div>
+            </div>
+
+            <div class="pt-4 text-[10px] font-mono text-neutral-400 flex justify-between items-center border-t border-black">
+                <span>AMPERSAND STUDIO</span>
+                <span id="gallery-counter">1 / 19</span>
+            </div>
+        </aside>
+
+        <!-- 右侧：全屏画廊主视口 (纯黑高对比先锋展台) -->
+        <section class="col-span-12 md:col-span-8 lg:col-span-9 h-full bg-[#0a0a0b] flex flex-col justify-between relative overflow-hidden p-4 md:p-8">
+            
+            <!-- 顶部操作栏 -->
+            <div class="w-full flex justify-between items-center text-xs text-neutral-400 font-mono z-10">
+                <span id="current-image-name" class="tracking-wider text-neutral-200">XH4 // 滨水微度假夜景实录</span>
+                <div class="flex space-x-3">
+                    <button onclick="toggleFullscreen()" class="px-3 py-1 bg-white/10 hover:bg-white hover:text-black border border-white/20 rounded text-neutral-200 text-[11px] transition-all">
+                        ⛶ 全屏放大研读 [F]
+                    </button>
+                </div>
+            </div>
+
+            <!-- 中间主图展示区 (支持点击全屏与键盘翻页) -->
+            <div class="relative flex-1 flex items-center justify-center my-2 overflow-hidden group">
+                <!-- 左箭头 -->
+                <button onclick="prevImage()" class="absolute left-2 md:left-6 z-20 p-3 rounded-full bg-black/60 hover:bg-white hover:text-black text-white border border-white/20 transition-all opacity-0 group-hover:opacity-100">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
+                </button>
+
+                <!-- 核心大图 -->
+                <img id="main-display-img" src="xinhu/XH4.jpg" 
+                     onerror="this.onerror=null; this.src='xinhu/XH4.png';"
+                     onclick="toggleFullscreen()"
+                     class="max-h-[66vh] md:max-h-[72vh] max-w-full object-contain rounded cursor-zoom-in shadow-2xl transition-all duration-200" 
+                     alt="展示大图">
+
+                <!-- 右箭头 -->
+                <button onclick="nextImage()" class="absolute right-2 md:right-6 z-20 p-3 rounded-full bg-black/60 hover:bg-white hover:text-black text-white border border-white/20 transition-all opacity-0 group-hover:opacity-100">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                </button>
+            </div>
+
+            <!-- 底部缩略图胶卷条 (点击瞬间切图) -->
+            <div class="w-full border-t border-white/10 pt-3 z-10">
+                <div id="thumb-ribbon" class="flex space-x-2.5 overflow-x-auto no-scrollbar py-1 justify-start md:justify-center items-center">
+                    <!-- JS 自动生成缩略图 -->
+                </div>
+            </div>
+
+        </section>
+
+    </main>
+
+    <!-- ================= 4K 极限沉浸全屏灯箱 (Fullscreen Lightbox) ================= -->
+    <div id="fs-lightbox" class="fixed inset-0 z-50 bg-black/98 hidden flex-col justify-between p-4 md:p-6 select-none">
+        <div class="flex justify-between items-center w-full border-b border-white/20 pb-3">
+            <span id="fs-title" class="text-sm text-white font-mono">FULLSCREEN VIEW</span>
+            <button onclick="toggleFullscreen()" class="px-4 py-1 bg-white text-black font-bold text-xs rounded hover:bg-neutral-200 transition-colors">
+                CLOSE [ESC]
+            </button>
+        </div>
+        <div class="relative flex-1 flex items-center justify-center my-2 overflow-hidden" onclick="toggleFullscreen()">
+            <img id="fs-img" src="" class="max-h-[85vh] max-w-[96vw] object-contain shadow-2xl" alt="超清大图">
+        </div>
+        <div class="text-center text-[11px] text-neutral-500 font-mono">
+            PRESS [ ← / → ] TO SWITCH · [ ESC ] TO EXIT
+        </div>
+    </div>
+
+    <!-- ================= 核心交互逻辑与数据源 ================= -->
+    <script>
+        // 数据库定义
+        const database = {
+            xinhu: {
+                tag: "COMMERCIAL PRACTICE // 01",
+                title: "心湖之境：荒岛改造全时段滨水微度假空间",
+                desc: "<p>针对废置湖心岛屿的系统性活化策略。通过打通内外视线廊道、重塑滨水亭台与动线，将荒废场地重构为集日间微度假、品质餐饮与夜经济于一体的全时段复合场景。</p><p>面对低预算约束，以最克制的轻钢、竹木微构件介入，打通水体景观界面，构筑全时段商业流线。</p>",
+                specs: [
+                    ["项目类型", "文旅微度假 / 滨水商业更新"],
+                    ["项目坐标", "中国 · 汾湖"],
+                    ["关键策略", "全时段流线 / 低扰动轻介入"],
+                    ["主持设计", "松涛 Fred Cheung"]
+                ],
+                images: [
+                    { src: "xinhu/XH4.jpg", fallback: "xinhu/XH4.png", title: "XH4 // 滨水微度假夜景实录" },
+                    { src: "xinhu/xh-plan.jpg", fallback: "xinhu/xh-plan.png", title: "PLAN // 荒岛全时段总平规划图" },
+                    { src: "xinhu/XH1.jpg", fallback: "xinhu/XH1.png", title: "XH1 // 绿意草坪与立面过渡" },
+                    { src: "xinhu/XH2.jpg", fallback: "xinhu/XH2.png", title: "XH2 // 吧台艺术装置与灯光" },
+                    { src: "xinhu/XH3.jpg", fallback: "xinhu/XH3.png", title: "XH3 // 滨水立面日景" },
+                    { src: "xinhu/XH10.jpg", fallback: "xinhu/XH10.png", title: "XH10 // 暮色滨水外摆氛围" },
+                    { src: "xinhu/XH13.jpg", fallback: "xinhu/XH13.png", title: "XH13 // 荒岛鸟瞰夜景实况" },
+                    { src: "xinhu/XH14.jpg", fallback: "xinhu/XH14.png", title: "XH14 // 空间分析图谱" },
+                    { src: "xinhu/XH18.jpg", fallback: "xinhu/XH18.png", title: "XH18 // 亲水步道与夜间照明" }
+                ]
+            },
+            xinquji: {
+                tag: "COMMERCIAL PRACTICE // 02",
+                title: "新衢记：绍兴老破大商业低预算救活实录",
+                desc: "<p>面对大尺度陈旧物业与严苛预算约束，通过模块化材料组织、光影层次重塑与出餐动线精简，以极低平方造价完成经营空间全面重构，验证存量餐饮的低成本救活模型。</p><p>改造将原先街道立面的消极破损痕迹转化为具有辨识度的先锋光影窗口，极大提升了进店客流平效。</p>",
+                specs: [
+                    ["项目类型", "存量餐饮空间更新 / 低预算救活"],
+                    ["项目坐标", "中国 · 绍兴"],
+                    ["面积造价", "极低成本模块化改建"],
+                    ["主持设计", "松涛 Fred Cheung"]
+                ],
+                images: [
+                    { src: "xinquji/xqj-after.png", fallback: "xinquji/xqj-after.jpg", title: "AFTER // 改造后先锋门头夜景" },
+                    { src: "xinquji/xqj-berore.png", fallback: "xinquji/xqj-berore.jpg", title: "BEFORE // 街道的伤疤 改造前原状" },
+                    { src: "xinquji/xqj-pm.png", fallback: "xinquji/xqj-pm.jpg", title: "PLAN // 空间动线重组与平面划分" },
+                    { src: "xinquji/xqj.png", fallback: "xinquji/xqj.jpg", title: "DETAIL // 包厢端景与材质光影" },
+                    { src: "xinquji/xqj2.png", fallback: "xinquji/xqj2.jpg", title: "DETAIL // 竹构立面与光影构造" },
+                    { src: "xinquji/xqj3.png", fallback: "xinquji/xqj3.jpg", title: "SCENE // 室内就餐区整体氛围" }
+                ]
+            },
+            liubai: {
+                tag: "COMMERCIAL PRACTICE // 03",
+                title: "留白·艺术客厅：港口老花窖与绿色能源更新",
+                desc: "<p>盘活港口遗留的老花窖建筑群，引入被动式节能与绿色微更新技术。打造集先锋艺术策展、日咖夜酒与生活方式沙龙于一身的港口文化复合地标。</p><p>利用原有花窖结构特性强化自然通风与采光，以极小干预完成工业遗存的当代转型。</p>",
+                specs: [
+                    ["项目类型", "工业遗存更新 / 艺术策展日咖夜酒"],
+                    ["关键技术", "被动式节能 / 绿色微更新"],
+                    ["主持设计", "松涛 Fred Cheung"]
+                ],
+                images: [
+                    { src: "liubai/xg1.png", fallback: "liubai/xg1.jpg", title: "PLATE 01 // 建筑剖面与微空间系统展板" },
+                    { src: "liubai/xg2.png", fallback: "liubai/xg2.jpg", title: "PLATE 02 // 空间轴测与功能重构展板" }
+                ]
+            },
+            pingan: {
+                tag: "URBAN RESEARCH // 01",
+                title: "历史的穿越：平安大街城市切片与空间摩擦力研究",
+                desc: "<p>剖析历史街区界面在快速机动化进程中产生的空间割裂，建立“空间摩擦力”分析图谱，探索如何通过微小构件与界面微干预重新缝合街区烟火气与步行密度。</p><p>全套展板详尽记录了从宏观城市肌理到微观节点构件的演变推导过程。</p>",
+                specs: [
+                    ["研究范畴", "城市切片 / 空间摩擦力 / 微干预"],
+                    ["学术成果", "全套展板推演 (P1 - P6)"],
+                    ["主持研究", "松涛 Fred Cheung (西建大建筑硕士)"]
+                ],
+                images: [
+                    { src: "pingan/p1.png", fallback: "pingan/p1.jpg", title: "PLATE P1 // 现状肌理与区位切片" },
+                    { src: "pingan/p2.png", fallback: "pingan/p2.jpg", title: "PLATE P2 // 黑白界面空间摩擦力测绘" },
+                    { src: "pingan/p3.png", fallback: "pingan/p3.jpg", title: "PLATE P3 // 城市切片历史图谱叠加" },
+                    { src: "pingan/p4.png", fallback: "pingan/p4.jpg", title: "PLATE P4 // 空间微干预节点推演" },
+                    { src: "pingan/p5.png", fallback: "pingan/p5.jpg", title: "PLATE P5 // 构造构件与材质策略" },
+                    { src: "pingan/p6.png", fallback: "pingan/p6.jpg", title: "PLATE P6 // 空间活化整体呈现" }
+                ]
+            },
+            topology: {
+                tag: "URBAN RESEARCH // 02",
+                title: "观念几何与拓扑生成：轻量化模块住宅原型研究",
+                desc: "<p>跳出传统砌体思维，以拓扑生成逻辑推导装配式轻量化建筑体量。探索极限场地约束下的可拓展居住原型，兼顾快速拼装弹性与极简几何张力。</p><p>结合实体手工模型与参数化形态生成，提供应对未来高密城市的轻量居住解决方案。</p>",
+                specs: [
+                    ["研究范畴", "观念几何 / 拓扑生成 / 轻量装配"],
+                    ["学术成果", "实体手工模型与构造图板 (Z1 - Z6)"],
+                    ["主持研究", "松涛 Fred Cheung"]
+                ],
+                images: [
+                    { src: "topology/Z1.png", fallback: "topology/Z1.jpg", title: "PLATE Z1 // 实体手工模型与形态生成" },
+                    { src: "topology/Z2.png", fallback: "topology/Z2.jpg", title: "PLATE Z2 // 模块拓扑推导与规则演化" },
+                    { src: "topology/Z3.png", fallback: "topology/Z3.jpg", title: "PLATE Z3 // 单元组合与内部空间排布" },
+                    { src: "topology/Z4.png", fallback: "topology/Z4.jpg", title: "PLATE Z4 // 平面图纸与可变居住模式" },
+                    { src: "topology/Z5.png", fallback: "topology/Z5.jpg", title: "PLATE Z5 // 装配式轻量构造与轴测拆解" },
+                    { src: "topology/Z6.png", fallback: "topology/Z6.jpg", title: "PLATE Z6 // 结构剖透视与场景氛围" }
+                ]
+            },
+            about: {
+                tag: "PHILOSOPHY // 03",
+                title: "欧洲建筑游学实录与设计哲学阐述",
+                desc: "<p>毕业于“建筑老八校”之一的西安建筑科技大学（建筑学硕士），本科深造于环境艺术设计专业。长期的跨界深耕消除了“宏观建筑体量与构造”与“微观空间情绪及材质”之间的认知鸿沟。</p><p>历经欧洲各时期古典遗存与当代先锋建筑的现场研读，确立了“新旧共生、克制干预”的核心方法论，主张用最精炼的结构与材料语言让存量资产重获新生。</p>",
+                specs: [
+                    ["学术背景", "西安建筑科技大学 · 建筑学硕士"],
+                    ["执业实体", "不止建筑事务所（杭州）有限公司"],
+                    ["官方邮箱", "contact@buzhi.studio"]
+                ],
+                images: [
+                    { src: "about/zlr2.png", fallback: "about/zlr2.jpg", title: "MONOGRAPH // 欧洲建筑游学实录与主理人" },
+                    { src: "about/zlr1.png", fallback: "about/zlr1.jpg", title: "SKETCHES // 手绘线稿与空间意象图册" }
+                ]
+            }
+        };
+
+        let currentKey = 'xinhu';
+        let currentImgIdx = 0;
+
+        // 加载词条数据
+        function loadEntry(key) {
+            currentKey = key;
+            currentImgIdx = 0;
+            const data = database[key];
+
+            // 1. 高亮顶部选中的按钮
+            document.querySelectorAll('.project-item').forEach(btn => btn.classList.remove('active'));
+            const activeBtn = document.getElementById('btn-' + key);
+            if (activeBtn) activeBtn.classList.add('active');
+
+            // 2. 更新左侧文本信息
+            document.getElementById('content-tag').textContent = data.tag;
+            document.getElementById('content-title').textContent = data.title;
+            document.getElementById('content-desc').innerHTML = data.desc;
+
+            // 3. 更新参数列表
+            const specsContainer = document.getElementById('content-specs');
+            specsContainer.innerHTML = data.specs.map(s => `<div class="flex justify-between"><span>${s[0]}:</span><span class="text-black font-medium">${s[1]}</span></div>`).join('');
+
+            // 4. 重建底部缩略图胶卷
+            const ribbon = document.getElementById('thumb-ribbon');
+            ribbon.innerHTML = '';
+            data.images.forEach((img, idx) => {
+                const thumb = document.createElement('div');
+                thumb.className = `thumb-btn shrink-0 w-12 h-12 md:w-16 md:h-16 rounded overflow-hidden border-2 border-transparent opacity-40 hover:opacity-100 cursor-pointer transition-all bg-black`;
+                thumb.innerHTML = `<img src="${img.src}" onerror="this.onerror=null; this.src='${img.fallback}';" class="w-full h-full object-cover" alt="thumb">`;
+                thumb.addEventListener('click', () => {
+                    currentImgIdx = idx;
+                    updateMainImage();
+                });
+                ribbon.appendChild(thumb);
+            });
+
+            // 5. 显示第一张图
+            updateMainImage();
+        }
+
+        // 更新大图
+        function updateMainImage() {
+            const data = database[currentKey];
+            const imgData = data.images[currentImgIdx];
+            const mainImg = document.getElementById('main-display-img');
+            const fsImg = document.getElementById('fs-img');
+
+            mainImg.style.opacity = '0.3';
+            setTimeout(() => {
+                mainImg.src = imgData.src;
+                mainImg.onerror = () => { mainImg.src = imgData.fallback; };
+                fsImg.src = imgData.src;
+                fsImg.onerror = () => { fsImg.src = imgData.fallback; };
+
+                document.getElementById('current-image-name').textContent = imgData.title;
+                document.getElementById('gallery-counter').textContent = `${currentImgIdx + 1} / ${data.images.length}`;
+                document.getElementById('fs-title').textContent = `${data.title} — [ ${imgData.title} ]`;
+
+                mainImg.style.opacity = '1';
+
+                // 高亮缩略图
+                const thumbs = document.querySelectorAll('.thumb-btn');
+                thumbs.forEach((t, i) => {
+                    if (i === currentImgIdx) {
+                        t.classList.add('active');
+                        t.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+                    } else {
+                        t.classList.remove('active');
+                    }
+                });
+            }, 100);
+        }
+
+        function prevImage() {
+            const data = database[currentKey];
+            currentImgIdx = (currentImgIdx - 1 + data.images.length) % data.images.length;
+            updateMainImage();
+        }
+
+        function nextImage() {
+            const data = database[currentKey];
+            currentImgIdx = (currentImgIdx + 1) % data.images.length;
+            updateMainImage();
+        }
+
+        // 全屏切换
+        function toggleFullscreen() {
+            const fs = document.getElementById('fs-lightbox');
+            if (fs.classList.contains('hidden')) {
+                fs.classList.remove('hidden');
+                fs.classList.add('flex');
+            } else {
+                fs.classList.add('hidden');
+                fs.classList.remove('flex');
+            }
+        }
+
+        // 键盘监听
+        window.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowLeft') prevImage();
+            if (e.key === 'ArrowRight') nextImage();
+            if (e.key === 'Escape') {
+                const fs = document.getElementById('fs-lightbox');
+                if (!fs.classList.contains('hidden')) toggleFullscreen();
+            }
+            if (e.key === 'f' || e.key === 'F') toggleFullscreen();
+        });
+
+        // 页面初始化加载第一项
+        window.addEventListener('DOMContentLoaded', () => loadEntry('xinhu'));
+    </script>
+</body>
+</html>
