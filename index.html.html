@@ -1,0 +1,790 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>不止建筑 AMPERSAND Studio | 官方网站</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Lenis Smooth Scroll -->
+    <script src="https://unpkg.com/@studio-freight/lenis@1.0.34/dist/lenis.min.js"></script>
+
+    <style>
+        body {
+            background-color: #080809;
+            color: #f0f0f0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            overflow-x: hidden;
+        }
+        html.lenis {
+            height: auto;
+        }
+        .lenis-smooth {
+            scroll-behavior: auto !important;
+        }
+        .grid-lines {
+            background-image: linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+                              linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+            background-size: 80px 80px;
+        }
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        /* 标签激活样式 (PILLS 黑白先锋对比) */
+        .tab-btn {
+            transition: all 0.25s ease;
+        }
+        .tab-btn.active {
+            background-color: #ffffff !important;
+            color: #000000 !important;
+            border-color: #ffffff !important;
+        }
+        .zoomable-img {
+            cursor: zoom-in;
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), filter 0.3s ease;
+        }
+        .zoomable-img:hover {
+            filter: brightness(1.08);
+        }
+        /* 缩略图聚焦高亮 */
+        .thumb-item.active {
+            border-color: #ffffff !important;
+            opacity: 1 !important;
+            transform: scale(1.08);
+        }
+    </style>
+</head>
+<body class="lenis-smooth grid-lines min-h-screen relative w-full selection:bg-white selection:text-black">
+
+    <!-- 1. 顶部全局通栏导航 -->
+    <header class="fixed top-0 left-0 w-full z-40 bg-[#080809]/92 backdrop-blur-xl border-b border-white/10 py-5 px-6 md:px-12 xl:px-16 flex justify-between items-center">
+        <a href="#" class="flex items-center space-x-4 group">
+            <img src="LOGO.png" 
+                 onerror="this.onerror=null; this.src='LOGO.jpg'; this.onerror=()=>this.style.display='none';" 
+                 class="h-9 md:h-11 w-auto object-contain brightness-100 group-hover:opacity-80 transition-opacity" 
+                 alt="AMPERSAND Logo">
+            <div class="flex items-baseline space-x-3 border-l border-white/20 pl-4">
+                <span class="text-xl md:text-2xl font-bold tracking-[0.25em] text-white">AMPERSAND</span>
+                <span class="text-sm tracking-widest text-neutral-400 font-light hidden sm:inline">不止建筑</span>
+            </div>
+        </a>
+        
+        <nav class="hidden lg:flex space-x-10 text-sm md:text-base tracking-[0.15em] text-neutral-300 font-medium">
+            <button onclick="switchTab('practice')" class="hover:text-white transition-colors duration-200">01. 商业落地实践</button>
+            <button onclick="switchTab('insights')" class="hover:text-white transition-colors duration-200">02. 研究室 / 思考</button>
+            <button onclick="switchTab('about')" class="hover:text-white transition-colors duration-200">03. 关于主理人</button>
+            <a href="#contact" class="hover:text-white transition-colors duration-200">04. 商务合作</a>
+        </nav>
+        
+        <a href="#contact" class="border border-white/40 bg-white/5 hover:bg-white hover:text-black px-6 py-2.5 text-xs md:text-sm font-semibold tracking-widest transition-all duration-300 rounded-full">
+            START A PROJECT ➔
+        </a>
+    </header>
+
+    <!-- 2. 首屏 (Hero) - PILLS 式通栏大标与宣言 -->
+    <section class="min-h-screen w-full flex flex-col justify-center px-6 md:px-12 xl:px-16 relative z-10 pt-36 pb-20 border-b border-white/10">
+        
+        <div class="w-full space-y-12">
+            
+            <!-- 品牌标识与机构信息 -->
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-6 pb-8 border-b border-white/10">
+                <div class="flex items-center space-x-6">
+                    <img src="LOGO.png" 
+                         onerror="this.onerror=null; this.src='LOGO.jpg'; this.onerror=()=>this.style.display='none';" 
+                         class="h-20 md:h-24 w-auto object-contain" 
+                         alt="不止建筑 Logo">
+                    <div class="space-y-1.5">
+                        <span class="text-sm md:text-base tracking-[0.3em] text-neutral-300 uppercase font-mono block font-semibold">AMPERSAND ARCHITECTURE & INTERIOR</span>
+                        <span class="text-xs md:text-sm text-neutral-400 tracking-widest block">不止建筑事务所（杭州）有限公司</span>
+                    </div>
+                </div>
+                <div class="inline-flex items-center space-x-3 px-5 py-2 bg-white/5 border border-white/20 rounded-full self-start md:self-auto">
+                    <span class="w-2.5 h-2.5 bg-white rounded-full animate-pulse"></span>
+                    <span class="text-xs md:text-sm tracking-[0.2em] text-neutral-200 uppercase font-medium">Architecture & Interior Integration</span>
+                </div>
+            </div>
+
+            <!-- 巨幅主标语 -->
+            <div class="space-y-6">
+                <div class="text-xs md:text-sm tracking-[0.4em] text-neutral-400 font-mono uppercase">// Studio Manifesto</div>
+                <h1 class="text-4xl sm:text-6xl md:text-8xl xl:text-9.5xl font-light tracking-tight leading-[1.03] text-white">
+                    不止于空间，<br>
+                    <span class="font-bold text-transparent bg-clip-text bg-gradient-to-r from-white via-neutral-100 to-neutral-400">重塑存量商业价值。</span>
+                </h1>
+            </div>
+
+            <!-- 核心阐述 -->
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 pt-4 items-end">
+                <div class="lg:col-span-8 space-y-4">
+                    <p class="text-xl md:text-3xl text-neutral-200 font-light leading-relaxed">
+                        “以建筑与室内<span class="text-white font-semibold">双重视角</span>，重塑<span class="text-white font-semibold">存量商业资产</span>与城市微空间。”
+                    </p>
+                    <p class="text-neutral-400 text-sm md:text-base max-w-5xl font-light leading-relaxed">
+                        不止建筑（AMPERSAND Studio）立足存量时代，致力于通过低成本高弹性的空间介入、商业动线重组与在地文脉挖掘，为老旧商业、文旅孤岛与城市微空间提供从宏观系统策略到微观细部落地的全周期解法。
+                    </p>
+                </div>
+
+                <div class="lg:col-span-4 flex lg:justify-end">
+                    <div class="text-xs md:text-sm text-neutral-400 space-y-1.5 font-mono">
+                        <div>LOCATION: HANGZHOU, CHINA</div>
+                        <div>SPECIALITY: ADAPTIVE REUSE & PRACTICE</div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- 3. 大尺寸分类筛选标签栏 -->
+        <div class="mt-20 pt-8 border-t border-white/10 flex flex-wrap gap-4">
+            <button onclick="filterContent('all')" id="tab-all" class="tab-btn active px-7 py-3.5 rounded-xl border border-white/20 text-sm md:text-base font-semibold tracking-wider uppercase">
+                ALL / 全部内容
+            </button>
+            <button onclick="filterContent('practice')" id="tab-practice" class="tab-btn px-7 py-3.5 rounded-xl border border-white/10 text-sm md:text-base font-medium tracking-wider uppercase text-neutral-300 hover:text-white hover:border-white/40 bg-neutral-900/40">
+                01. 商业落地实践 (Practice)
+            </button>
+            <button onclick="filterContent('insights')" id="tab-insights" class="tab-btn px-7 py-3.5 rounded-xl border border-white/10 text-sm md:text-base font-medium tracking-wider uppercase text-neutral-300 hover:text-white hover:border-white/40 bg-neutral-900/40">
+                02. 研究室 / 思考 (Lab/Insights)
+            </button>
+            <button onclick="filterContent('about')" id="tab-about" class="tab-btn px-7 py-3.5 rounded-xl border border-white/10 text-sm md:text-base font-medium tracking-wider uppercase text-neutral-300 hover:text-white hover:border-white/40 bg-neutral-900/40">
+                03. 关于主理人 (About)
+            </button>
+        </div>
+
+    </section>
+
+    <!-- 4. 【商业落地实践 (Commercial Practice)】 -->
+    <section id="section-practice" class="content-section py-28 px-6 md:px-12 xl:px-16 relative z-10 border-b border-white/10 bg-black/40 w-full">
+        <div class="w-full space-y-28">
+            
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-end gap-4 border-b border-white/10 pb-6">
+                <div>
+                    <span class="text-xs md:text-sm tracking-[0.35em] text-neutral-400 uppercase font-mono font-semibold">SECTION 01 // Commercial Practice</span>
+                    <h2 class="text-3xl md:text-5xl font-bold mt-2 text-white">商业落地实践</h2>
+                </div>
+                <div class="text-sm md:text-base text-neutral-400 max-w-lg leading-relaxed">
+                    文旅微度假、老旧商业存量救活、工业遗存绿色更新。<span class="text-white font-medium">点击任意图片可开启 4K 全屏视口研读。</span>
+                </div>
+            </div>
+
+            <!-- 项目 01：心湖之境 -->
+            <div class="space-y-12">
+                <div class="grid grid-cols-1 xl:grid-cols-12 gap-12 items-center">
+                    <div class="xl:col-span-5 space-y-6">
+                        <div class="inline-block px-4 py-1.5 bg-neutral-900 border border-neutral-700 rounded-full text-xs md:text-sm text-neutral-300 font-medium">
+                            01 / 文旅 · 餐饮 · 夜经济
+                        </div>
+                        <h3 class="text-3xl md:text-4xl font-bold text-white tracking-tight leading-tight">心湖之境：荒岛改造全时段滨水微度假空间</h3>
+                        <p class="text-neutral-300 text-sm md:text-base leading-relaxed">
+                            针对废置湖心岛屿的系统性活化策略。通过打通内外视线廊道、重塑滨水亭台与动线，将荒废场地重构为集日间微度假、品质餐饮与夜经济于一体的全时段复合场景。
+                        </p>
+                        <div class="text-xs md:text-sm text-neutral-400 space-y-2 border-l-2 border-neutral-700 pl-4 py-2">
+                            <p>📍 项目类型：文旅度假 / 商业建筑与景观微改造</p>
+                            <p>💡 关键策略：低扰动介入、全时段经营流线、水体景观与建筑无缝衔接</p>
+                        </div>
+                    </div>
+
+                    <!-- 封面大画幅图 -->
+                    <div class="xl:col-span-7">
+                        <div class="relative w-full aspect-[16/9] overflow-hidden rounded-3xl border border-neutral-800 group shadow-2xl bg-neutral-950">
+                            <img src="xinhu/XH4.jpg" 
+                                 loading="lazy" decoding="async"
+                                 onerror="this.onerror=null; this.src='xinhu/XH4.png';"
+                                 class="zoomable-img w-full h-full object-cover group-hover:scale-105" alt="心湖之境 滨水微度假夜景实录">
+                            <div class="absolute bottom-6 left-6 px-4 py-2 bg-black/80 backdrop-blur-md border border-white/20 text-xs md:text-sm text-white font-medium tracking-widest rounded-xl pointer-events-none flex items-center space-x-2">
+                                <span>🔍 点击全屏大图</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 心湖之境：全时段画廊 (XH1~XH18) -->
+                <div class="bg-neutral-900/30 border border-neutral-800 p-6 md:p-10 rounded-3xl space-y-6">
+                    <div class="flex flex-col md:flex-row justify-between items-start md:items-center text-xs md:text-sm text-neutral-300 border-b border-neutral-800 pb-4 gap-2">
+                        <span class="font-bold text-white text-base">总平规划与全时段场景实录 (SCENE GALLERY)</span>
+                        <span class="text-neutral-400 font-mono">← 横向滚动 · 点击任意单张进入全屏 →</span>
+                    </div>
+                    <div class="flex space-x-6 overflow-x-auto no-scrollbar py-3">
+                        <div class="shrink-0 w-[320px] md:w-[440px] space-y-3">
+                            <div class="aspect-[4/3] rounded-2xl overflow-hidden border border-neutral-700 bg-neutral-950">
+                                <img src="xinhu/xh-plan.jpg" loading="lazy" decoding="async" onerror="this.onerror=null; this.src='xinhu/xh-plan.png';" class="zoomable-img w-full h-full object-contain p-2" alt="荒岛全时段总平规划图">
+                            </div>
+                            <span class="text-xs md:text-sm text-neutral-400 block font-mono">PLAN // 荒岛全时段总平规划</span>
+                        </div>
+                        <div class="shrink-0 w-[280px] md:w-[380px] space-y-3">
+                            <div class="aspect-[4/3] rounded-2xl overflow-hidden border border-neutral-800 bg-neutral-950">
+                                <img src="xinhu/XH1.jpg" loading="lazy" decoding="async" onerror="this.onerror=null; this.src='xinhu/XH1.png';" class="zoomable-img w-full h-full object-cover" alt="XH1 绿意草坪与立面过渡">
+                            </div>
+                            <span class="text-xs md:text-sm text-neutral-400 block font-mono">XH // 01 绿意草坪与立面过渡</span>
+                        </div>
+                        <div class="shrink-0 w-[280px] md:w-[380px] space-y-3">
+                            <div class="aspect-[4/3] rounded-2xl overflow-hidden border border-neutral-800 bg-neutral-950">
+                                <img src="xinhu/XH2.jpg" loading="lazy" decoding="async" onerror="this.onerror=null; this.src='xinhu/XH2.png';" class="zoomable-img w-full h-full object-cover" alt="XH2 吧台艺术装置与灯光">
+                            </div>
+                            <span class="text-xs md:text-sm text-neutral-400 block font-mono">XH // 02 吧台艺术装置与灯光</span>
+                        </div>
+                        <div class="shrink-0 w-[280px] md:w-[380px] space-y-3">
+                            <div class="aspect-[4/3] rounded-2xl overflow-hidden border border-neutral-800 bg-neutral-950">
+                                <img src="xinhu/XH3.jpg" loading="lazy" decoding="async" onerror="this.onerror=null; this.src='xinhu/XH3.png';" class="zoomable-img w-full h-full object-cover" alt="XH3 滨水立面日景">
+                            </div>
+                            <span class="text-xs md:text-sm text-neutral-400 block font-mono">XH // 03 滨水立面日景</span>
+                        </div>
+                        <div class="shrink-0 w-[280px] md:w-[380px] space-y-3">
+                            <div class="aspect-[4/3] rounded-2xl overflow-hidden border border-neutral-800 bg-neutral-950">
+                                <img src="xinhu/XH10.jpg" loading="lazy" decoding="async" onerror="this.onerror=null; this.src='xinhu/XH10.png';" class="zoomable-img w-full h-full object-cover" alt="XH10 暮色滨水外摆氛围">
+                            </div>
+                            <span class="text-xs md:text-sm text-neutral-400 block font-mono">XH // 10 暮色滨水外摆氛围</span>
+                        </div>
+                        <div class="shrink-0 w-[280px] md:w-[380px] space-y-3">
+                            <div class="aspect-[4/3] rounded-2xl overflow-hidden border border-neutral-800 bg-neutral-950">
+                                <img src="xinhu/XH13.jpg" loading="lazy" decoding="async" onerror="this.onerror=null; this.src='xinhu/XH13.png';" class="zoomable-img w-full h-full object-cover" alt="XH13 荒岛鸟瞰夜景实况">
+                            </div>
+                            <span class="text-xs md:text-sm text-neutral-400 block font-mono">XH // 13 荒岛鸟瞰夜景实况</span>
+                        </div>
+                        <div class="shrink-0 w-[280px] md:w-[380px] space-y-3">
+                            <div class="aspect-[4/3] rounded-2xl overflow-hidden border border-neutral-800 bg-neutral-950">
+                                <img src="xinhu/XH14.jpg" loading="lazy" decoding="async" onerror="this.onerror=null; this.src='xinhu/XH14.png';" class="zoomable-img w-full h-full object-cover" alt="XH14 空间分析图谱">
+                            </div>
+                            <span class="text-xs md:text-sm text-neutral-400 block font-mono">XH // 14 空间分析图谱</span>
+                        </div>
+                        <div class="shrink-0 w-[280px] md:w-[380px] space-y-3">
+                            <div class="aspect-[4/3] rounded-2xl overflow-hidden border border-neutral-800 bg-neutral-950">
+                                <img src="xinhu/XH18.jpg" loading="lazy" decoding="async" onerror="this.onerror=null; this.src='xinhu/XH18.png';" class="zoomable-img w-full h-full object-cover" alt="XH18 亲水步道与夜间照明">
+                            </div>
+                            <span class="text-xs md:text-sm text-neutral-400 block font-mono">XH // 18 亲水步道与夜间照明</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 项目 02 & 03 -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+                
+                <!-- 02. 新衢记 -->
+                <div class="bg-neutral-900/40 border border-neutral-800 p-8 md:p-10 rounded-3xl space-y-8">
+                    <div class="space-y-3">
+                        <div class="inline-block px-4 py-1.5 bg-neutral-900 border border-neutral-700 rounded-full text-xs md:text-sm text-neutral-300 font-medium">
+                            02 / 存量餐饮更新 · 低预算救活实录
+                        </div>
+                        <h4 class="text-2xl md:text-3xl font-bold text-white">新衢记：绍兴老破大商业低预算救活实录</h4>
+                        <p class="text-neutral-300 text-sm md:text-base leading-relaxed">
+                            直面街道老旧陈腐的物业现状。通过出餐动线精简与低造价材料策略，以极低平方成本完成老旧商业起死回生。
+                        </p>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="space-y-2">
+                            <div class="aspect-[4/3] rounded-2xl overflow-hidden border border-neutral-800 relative bg-neutral-950">
+                                <img src="xinquji/xqj-berore.png" loading="lazy" decoding="async" onerror="this.onerror=null; this.src='xinquji/xqj-berore.jpg';" class="zoomable-img w-full h-full object-cover grayscale" alt="新衢记 改造前街道伤疤">
+                                <span class="absolute bottom-3 left-3 px-3 py-1 bg-black/80 text-xs text-neutral-200 rounded-lg pointer-events-none">原状：街道伤疤</span>
+                            </div>
+                        </div>
+                        <div class="space-y-2">
+                            <div class="aspect-[4/3] rounded-2xl overflow-hidden border border-neutral-800 relative bg-neutral-950">
+                                <img src="xinquji/xqj-after.png" loading="lazy" decoding="async" onerror="this.onerror=null; this.src='xinquji/xqj-after.jpg';" class="zoomable-img w-full h-full object-cover" alt="新衢记 门头夜景更新后">
+                                <span class="absolute bottom-3 left-3 px-3 py-1 bg-white text-xs text-black font-bold rounded-lg pointer-events-none">更新后门头夜景</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-3 gap-4">
+                        <div class="aspect-square rounded-xl overflow-hidden border border-neutral-800 bg-neutral-950">
+                            <img src="xinquji/xqj-pm.png" loading="lazy" decoding="async" onerror="this.onerror=null; this.src='xinquji/xqj-pm.jpg';" class="zoomable-img w-full h-full object-cover" alt="新衢记 平面动线与空间划分">
+                        </div>
+                        <div class="aspect-square rounded-xl overflow-hidden border border-neutral-800 bg-neutral-950">
+                            <img src="xinquji/xqj.png" loading="lazy" decoding="async" onerror="this.onerror=null; this.src='xinquji/xqj.jpg';" class="zoomable-img w-full h-full object-cover" alt="新衢记 包厢端景与材质">
+                        </div>
+                        <div class="aspect-square rounded-xl overflow-hidden border border-neutral-800 bg-neutral-950">
+                            <img src="xinquji/xqj2.png" loading="lazy" decoding="async" onerror="this.onerror=null; this.src='xinquji/xqj2.jpg';" class="zoomable-img w-full h-full object-cover" alt="新衢记 竹构立面细节">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 03. 留白·艺术客厅 -->
+                <div class="bg-neutral-900/40 border border-neutral-800 p-8 md:p-10 rounded-3xl space-y-8">
+                    <div class="space-y-3">
+                        <div class="inline-block px-4 py-1.5 bg-neutral-900 border border-neutral-700 rounded-full text-xs md:text-sm text-neutral-300 font-medium">
+                            03 / 工业遗存更新 · 策展与日咖夜酒
+                        </div>
+                        <h4 class="text-2xl md:text-3xl font-bold text-white">留白·艺术客厅：港口老花窖与绿色能源更新</h4>
+                        <p class="text-neutral-300 text-sm md:text-base leading-relaxed">
+                            盘活港口遗留的老花窖建筑群，引入绿色能源与被动式节能体系，构建集艺术策展、日咖夜酒与先锋社群于一体的港口文化微地标。
+                        </p>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-5">
+                        <div class="space-y-2 group">
+                            <div class="aspect-[3/4] rounded-2xl overflow-hidden border border-neutral-800 bg-neutral-950">
+                                <img src="liubai/xg1.png" loading="lazy" decoding="async" onerror="this.onerror=null; this.src='liubai/xg1.jpg';" class="zoomable-img w-full h-full object-contain p-3" alt="留白·艺术客厅 建筑剖面与微空间系统展板">
+                            </div>
+                            <span class="text-xs md:text-sm text-neutral-400 block font-mono">PLATE // 01 建筑剖面与微空间系统</span>
+                        </div>
+                        <div class="space-y-2 group">
+                            <div class="aspect-[3/4] rounded-2xl overflow-hidden border border-neutral-800 bg-neutral-950">
+                                <img src="liubai/xg2.png" loading="lazy" decoding="async" onerror="this.onerror=null; this.src='liubai/xg2.jpg';" class="zoomable-img w-full h-full object-contain p-3" alt="留白·艺术客厅 空间轴测与功能重构展板">
+                            </div>
+                            <span class="text-xs md:text-sm text-neutral-400 block font-mono">PLATE // 02 空间轴测与功能重构</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </section>
+
+    <!-- 5. 【研究室 / 思考 (Lab/Insights)】 -->
+    <section id="section-insights" class="content-section py-28 px-6 md:px-12 xl:px-16 relative z-10 border-b border-white/10 bg-neutral-950/90 w-full">
+        <div class="w-full space-y-24">
+            
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-end gap-4 border-b border-white/10 pb-6">
+                <div>
+                    <span class="text-xs md:text-sm tracking-[0.35em] text-neutral-400 uppercase font-mono font-semibold">SECTION 02 // Lab & Insights</span>
+                    <h2 class="text-3xl md:text-5xl font-bold mt-2 text-white">研究室 / 思考</h2>
+                </div>
+                <div class="text-sm md:text-base text-neutral-400 max-w-lg leading-relaxed">
+                    不仅停留在商业落地，更以学术与类型学研究为内核。点击任意展板即可开启全屏高精度研读。
+                </div>
+            </div>
+
+            <!-- 研究 01：平安大街 -->
+            <div class="bg-neutral-900/40 border border-neutral-800 p-8 md:p-12 rounded-3xl space-y-8">
+                <div class="flex flex-col md:flex-row justify-between items-start md:items-end gap-4 border-b border-neutral-800 pb-6">
+                    <div class="space-y-3">
+                        <span class="text-xs md:text-sm tracking-widest text-neutral-300 uppercase font-mono font-semibold">01 / Urban Slice & Micro Intervention</span>
+                        <h4 class="text-2xl md:text-4xl font-bold text-white">历史的穿越：平安大街城市切片与空间摩擦力研究</h4>
+                        <p class="text-neutral-300 text-sm md:text-base max-w-5xl leading-relaxed mt-2">
+                            剖析历史街区界面在快速机动化进程中产生的空间割裂，建立“空间摩擦力”分析图谱，探索如何通过微小构件与界面微干预重新缝合街区烟火气与步行密度。
+                        </p>
+                    </div>
+                    <div class="text-xs md:text-sm text-neutral-400 font-mono shrink-0">
+                        🔍 点击图板全屏翻阅 (P1 - P6)
+                    </div>
+                </div>
+
+                <div class="flex space-x-6 overflow-x-auto no-scrollbar py-4">
+                    <div class="shrink-0 w-[340px] md:w-[540px] space-y-3 group">
+                        <div class="aspect-[16/11] rounded-2xl overflow-hidden border border-neutral-800 bg-neutral-950">
+                            <img src="pingan/p1.png" loading="lazy" decoding="async" onerror="this.onerror=null; this.src='pingan/p1.jpg';" class="zoomable-img w-full h-full object-cover" alt="平安大街研究 P1 // 现状肌理与区位切片">
+                        </div>
+                        <div class="flex justify-between items-center text-xs md:text-sm text-neutral-400">
+                            <span class="font-mono text-white">PLATE // 01</span>
+                            <span>现状肌理与区位切片</span>
+                        </div>
+                    </div>
+                    <div class="shrink-0 w-[340px] md:w-[540px] space-y-3 group">
+                        <div class="aspect-[16/11] rounded-2xl overflow-hidden border border-neutral-800 bg-neutral-950">
+                            <img src="pingan/p2.png" loading="lazy" decoding="async" onerror="this.onerror=null; this.src='pingan/p2.jpg';" class="zoomable-img w-full h-full object-cover" alt="平安大街研究 P2 // 黑白界面空间摩擦力测绘">
+                        </div>
+                        <div class="flex justify-between items-center text-xs md:text-sm text-neutral-400">
+                            <span class="font-mono text-white">PLATE // 02</span>
+                            <span>黑白界面空间摩擦力测绘</span>
+                        </div>
+                    </div>
+                    <div class="shrink-0 w-[340px] md:w-[540px] space-y-3 group">
+                        <div class="aspect-[16/11] rounded-2xl overflow-hidden border border-neutral-800 bg-neutral-950">
+                            <img src="pingan/p3.png" loading="lazy" decoding="async" onerror="this.onerror=null; this.src='pingan/p3.jpg';" class="zoomable-img w-full h-full object-cover" alt="平安大街研究 P3 // 城市切片历史图谱叠加">
+                        </div>
+                        <div class="flex justify-between items-center text-xs md:text-sm text-neutral-400">
+                            <span class="font-mono text-white">PLATE // 03</span>
+                            <span>城市切片历史图谱叠加</span>
+                        </div>
+                    </div>
+                    <div class="shrink-0 w-[340px] md:w-[540px] space-y-3 group">
+                        <div class="aspect-[16/11] rounded-2xl overflow-hidden border border-neutral-800 bg-neutral-950">
+                            <img src="pingan/p4.png" loading="lazy" decoding="async" onerror="this.onerror=null; this.src='pingan/p4.jpg';" class="zoomable-img w-full h-full object-cover" alt="平安大街研究 P4 // 空间微干预节点推演">
+                        </div>
+                        <div class="flex justify-between items-center text-xs md:text-sm text-neutral-400">
+                            <span class="font-mono text-white">PLATE // 04</span>
+                            <span>空间微干预节点推演</span>
+                        </div>
+                    </div>
+                    <div class="shrink-0 w-[340px] md:w-[540px] space-y-3 group">
+                        <div class="aspect-[16/11] rounded-2xl overflow-hidden border border-neutral-800 bg-neutral-950">
+                            <img src="pingan/p5.png" loading="lazy" decoding="async" onerror="this.onerror=null; this.src='pingan/p5.jpg';" class="zoomable-img w-full h-full object-cover" alt="平安大街研究 P5 // 构造构件与材质策略">
+                        </div>
+                        <div class="flex justify-between items-center text-xs md:text-sm text-neutral-400">
+                            <span class="font-mono text-white">PLATE // 05</span>
+                            <span>构造构件与材质策略</span>
+                        </div>
+                    </div>
+                    <div class="shrink-0 w-[340px] md:w-[540px] space-y-3 group">
+                        <div class="aspect-[16/11] rounded-2xl overflow-hidden border border-neutral-800 bg-neutral-950">
+                            <img src="pingan/p6.png" loading="lazy" decoding="async" onerror="this.onerror=null; this.src='pingan/p6.jpg';" class="zoomable-img w-full h-full object-cover" alt="平安大街研究 P6 // 空间活化整体呈现">
+                        </div>
+                        <div class="flex justify-between items-center text-xs md:text-sm text-neutral-400">
+                            <span class="font-mono text-white">PLATE // 06</span>
+                            <span>空间活化整体呈现</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 研究 02：观念几何与拓扑生成 -->
+            <div class="bg-neutral-900/40 border border-neutral-800 p-8 md:p-12 rounded-3xl space-y-8">
+                <div class="flex flex-col md:flex-row justify-between items-start md:items-end gap-4 border-b border-neutral-800 pb-6">
+                    <div class="space-y-3">
+                        <span class="text-xs md:text-sm tracking-widest text-neutral-300 uppercase font-mono font-semibold">02 / Concept Geometry & Modular Prototype</span>
+                        <h4 class="text-2xl md:text-4xl font-bold text-white">观念几何与拓扑生成：轻量化模块住宅原型研究</h4>
+                        <p class="text-neutral-300 text-sm md:text-base max-w-5xl leading-relaxed mt-2">
+                            跳出传统砌体思维，以拓扑生成逻辑推导装配式轻量化建筑体量。探索极限场地约束下的可拓展居住原型，兼顾快速拼装弹性与极简几何张力。
+                        </p>
+                    </div>
+                    <div class="text-xs md:text-sm text-neutral-400 font-mono shrink-0">
+                        🔍 点击模型图板全屏翻阅 (Z1 - Z6)
+                    </div>
+                </div>
+
+                <div class="flex space-x-6 overflow-x-auto no-scrollbar py-4">
+                    <div class="shrink-0 w-[340px] md:w-[540px] space-y-3 group">
+                        <div class="aspect-[16/11] rounded-2xl overflow-hidden border border-neutral-800 bg-neutral-950">
+                            <img src="topology/Z1.png" loading="lazy" decoding="async" onerror="this.onerror=null; this.src='topology/Z1.jpg';" class="zoomable-img w-full h-full object-cover" alt="拓扑生成 Z1 // 实体手工模型与形态生成">
+                        </div>
+                        <div class="flex justify-between items-center text-xs md:text-sm text-neutral-400">
+                            <span class="font-mono text-white">PLATE // Z1</span>
+                            <span>实体手工模型与形态生成</span>
+                        </div>
+                    </div>
+                    <div class="shrink-0 w-[340px] md:w-[540px] space-y-3 group">
+                        <div class="aspect-[16/11] rounded-2xl overflow-hidden border border-neutral-800 bg-neutral-950">
+                            <img src="topology/Z2.png" loading="lazy" decoding="async" onerror="this.onerror=null; this.src='topology/Z2.jpg';" class="zoomable-img w-full h-full object-cover" alt="拓扑生成 Z2 // 模块拓扑推导与规则演化">
+                        </div>
+                        <div class="flex justify-between items-center text-xs md:text-sm text-neutral-400">
+                            <span class="font-mono text-white">PLATE // Z2</span>
+                            <span>模块拓扑推导与规则演化</span>
+                        </div>
+                    </div>
+                    <div class="shrink-0 w-[340px] md:w-[540px] space-y-3 group">
+                        <div class="aspect-[16/11] rounded-2xl overflow-hidden border border-neutral-800 bg-neutral-950">
+                            <img src="topology/Z3.png" loading="lazy" decoding="async" onerror="this.onerror=null; this.src='topology/Z3.jpg';" class="zoomable-img w-full h-full object-cover" alt="拓扑生成 Z3 // 单元组合与内部空间排布">
+                        </div>
+                        <div class="flex justify-between items-center text-xs md:text-sm text-neutral-400">
+                            <span class="font-mono text-white">PLATE // Z3</span>
+                            <span>单元组合与内部空间排布</span>
+                        </div>
+                    </div>
+                    <div class="shrink-0 w-[340px] md:w-[540px] space-y-3 group">
+                        <div class="aspect-[16/11] rounded-2xl overflow-hidden border border-neutral-800 bg-neutral-950">
+                            <img src="topology/Z4.png" loading="lazy" decoding="async" onerror="this.onerror=null; this.src='topology/Z4.jpg';" class="zoomable-img w-full h-full object-cover" alt="拓扑生成 Z4 // 平面图纸与可变居住模式">
+                        </div>
+                        <div class="flex justify-between items-center text-xs md:text-sm text-neutral-400">
+                            <span class="font-mono text-white">PLATE // Z4</span>
+                            <span>平面图纸与可变居住模式</span>
+                        </div>
+                    </div>
+                    <div class="shrink-0 w-[340px] md:w-[540px] space-y-3 group">
+                        <div class="aspect-[16/11] rounded-2xl overflow-hidden border border-neutral-800 bg-neutral-950">
+                            <img src="topology/Z5.png" loading="lazy" decoding="async" onerror="this.onerror=null; this.src='topology/Z5.jpg';" class="zoomable-img w-full h-full object-cover" alt="拓扑生成 Z5 // 装配式轻量构造与轴测拆解">
+                        </div>
+                        <div class="flex justify-between items-center text-xs md:text-sm text-neutral-400">
+                            <span class="font-mono text-white">PLATE // Z5</span>
+                            <span>装配式轻量构造与轴测拆解</span>
+                        </div>
+                    </div>
+                    <div class="shrink-0 w-[340px] md:w-[540px] space-y-3 group">
+                        <div class="aspect-[16/11] rounded-2xl overflow-hidden border border-neutral-800 bg-neutral-950">
+                            <img src="topology/Z6.png" loading="lazy" decoding="async" onerror="this.onerror=null; this.src='topology/Z6.jpg';" class="zoomable-img w-full h-full object-cover" alt="拓扑生成 Z6 // 结构剖透视与场景氛围">
+                        </div>
+                        <div class="flex justify-between items-center text-xs md:text-sm text-neutral-400">
+                            <span class="font-mono text-white">PLATE // Z6</span>
+                            <span>结构剖透视与场景氛围</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- 6. 【关于主理人 (About & Philosophy)】 -->
+    <section id="section-about" class="content-section py-28 px-6 md:px-12 xl:px-16 relative z-10 border-b border-white/10 bg-black/40 w-full">
+        <div class="w-full space-y-20">
+            
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-end gap-4 border-b border-white/10 pb-6">
+                <div>
+                    <span class="text-xs md:text-sm tracking-[0.35em] text-neutral-400 uppercase font-mono font-semibold">SECTION 03 // Philosophy & Background</span>
+                    <h2 class="text-3xl md:text-5xl font-bold mt-2 text-white">关于主理人</h2>
+                </div>
+                <div class="text-sm md:text-base text-neutral-400 max-w-lg leading-relaxed">
+                    建筑学系统思辨 × 室内精细落地。点击游学画册查看高清手绘与空间意象图录。
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 xl:grid-cols-12 gap-16 items-center">
+                <div class="xl:col-span-6 space-y-4">
+                    <div class="rounded-3xl overflow-hidden border border-neutral-800 bg-neutral-950 aspect-[4/3] shadow-2xl">
+                        <img src="about/zlr2.png" 
+                             loading="lazy" decoding="async"
+                             onerror="this.onerror=null; this.src='about/zlr2.jpg';"
+                             class="zoomable-img w-full h-full object-contain p-4" alt="欧洲建筑游学实录与主理人">
+                    </div>
+                    <div class="flex justify-between text-xs md:text-sm text-neutral-400">
+                        <span class="font-mono text-white">EUROPE ARCHITECTURE STUDY // 游学实录</span>
+                        <span>松涛 Fred Cheung</span>
+                    </div>
+                </div>
+
+                <div class="xl:col-span-6 space-y-8">
+                    <h3 class="text-3xl md:text-4xl font-bold tracking-tight text-white leading-tight">
+                        建筑学系统思辨 × 室内精细落地
+                    </h3>
+                    <div class="space-y-5 text-neutral-300 text-sm md:text-base leading-relaxed font-light">
+                        <p>
+                            毕业于“建筑老八校”之一的<strong>西安建筑科技大学</strong>（建筑学硕士），本科深造于环境艺术设计专业。长期的跨界深耕，消除了“宏观建筑体量与构造”与“微观空间情绪及材质”之间的认知鸿沟。
+                        </p>
+                        <p>
+                            <strong>欧洲建筑游学实录与沉淀</strong>：历经欧洲各时期古典遗存与当代先锋建筑的现场研读，确立了“新旧共生、克制干预”的核心方法论。我们拒绝浮于表面的装饰堆砌，主张用最精炼的结构与材料语言，让老旧空间在历史痕迹与现代商业逻辑中再次生长。
+                        </p>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-4 border-t border-neutral-800 text-xs md:text-sm">
+                        <div class="p-6 rounded-2xl bg-neutral-900/70 border border-neutral-700">
+                            <span class="text-neutral-400 block mb-1 font-mono uppercase">ACADEMIC DEGREE</span>
+                            <span class="text-white font-semibold text-base">西安建筑科技大学 · 建筑学硕士</span>
+                        </div>
+                        <div class="p-6 rounded-2xl bg-neutral-900/70 border border-neutral-700">
+                            <span class="text-neutral-400 block mb-1 font-mono uppercase">STUDIO ENTITY</span>
+                            <span class="text-white font-semibold text-base">不止建筑事务所（杭州）有限公司</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- zlr1 全宽线稿画册展板 -->
+            <div class="rounded-3xl overflow-hidden border border-neutral-800 bg-neutral-900/40 p-6 md:p-12 w-full">
+                <div class="w-full space-y-4">
+                    <div class="aspect-[16/9] md:aspect-[21/9] rounded-2xl overflow-hidden border border-neutral-800 bg-neutral-950">
+                        <img src="about/zlr1.png" loading="lazy" decoding="async" onerror="this.onerror=null; this.src='about/zlr1.jpg';" class="zoomable-img w-full h-full object-contain p-4" alt="手绘意象与欧洲游学切片画册">
+                    </div>
+                    <div class="flex justify-between text-xs md:text-sm text-neutral-400 font-mono pt-2">
+                        <span class="text-white font-semibold">ARCHITECTURAL SKETCHES & MONOGRAPH</span>
+                        <span>手绘线稿与空间意象图册 (点击可全屏放大)</span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- 7. 商务合作 (Contact) -->
+    <section id="contact" class="py-28 px-6 md:px-12 xl:px-16 relative z-10 border-b border-white/10 bg-neutral-950 w-full">
+        <div class="max-w-4xl mx-auto text-center space-y-12">
+            <div class="space-y-4">
+                <span class="text-xs md:text-sm tracking-[0.35em] text-neutral-400 uppercase font-mono font-semibold">SECTION 04 // Collaborate</span>
+                <h2 class="text-3xl md:text-5xl font-bold text-white">开启您的存量空间活化</h2>
+                <p class="text-neutral-300 text-sm md:text-base max-w-xl mx-auto leading-relaxed">
+                    无论您面临老旧商业低预算突围、文旅荒岛盘活，还是微更新改造，欢迎随时与我们建立联络。
+                </p>
+            </div>
+
+            <div class="bg-neutral-900/70 p-8 md:p-12 rounded-3xl border border-neutral-800 text-left max-w-2xl mx-auto space-y-6">
+                <div>
+                    <label class="block text-xs md:text-sm uppercase tracking-wider text-neutral-300 mb-2 font-mono font-medium">您的称呼 / 公司品牌</label>
+                    <input type="text" placeholder="例如：陈先生 / 某文旅发展公司" class="w-full bg-black/70 border border-neutral-700 focus:border-white rounded-xl px-4 py-3.5 text-sm md:text-base text-white outline-none transition-colors">
+                </div>
+                <div>
+                    <label class="block text-xs md:text-sm uppercase tracking-wider text-neutral-300 mb-2 font-mono font-medium">项目现状及诉求</label>
+                    <textarea rows="4" placeholder="例如：存量商业物业更新，建筑面积约 1200㎡，寻求商业策略与设计方案..." class="w-full bg-black/70 border border-neutral-700 focus:border-white rounded-xl px-4 py-3.5 text-sm md:text-base text-white outline-none transition-colors"></textarea>
+                </div>
+                <button class="w-full bg-white text-black font-bold text-sm md:text-base py-4 uppercase tracking-widest rounded-xl hover:bg-neutral-200 transition-colors">
+                    提交咨询意向 ➔
+                </button>
+            </div>
+
+            <div class="text-sm text-neutral-400 space-y-2 pt-6 font-mono">
+                <p>📩 官方邮箱：<span class="text-white border-b border-white/40">contact@buzhi.studio</span></p>
+                <p>📍 工作室坐标：中国 · 杭州</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- 8. 页脚 -->
+    <footer class="py-12 px-6 md:px-12 xl:px-16 border-t border-neutral-900 flex flex-col md:flex-row justify-between items-center text-xs md:text-sm text-neutral-400 gap-4 w-full">
+        <div>© 2026 AMPERSAND Studio 不止建筑事务所（杭州）有限公司. All Rights Reserved.</div>
+        <div class="flex space-x-6 font-mono">
+            <span class="text-white font-medium">buzhi.studio</span>
+        </div>
+    </footer>
+
+    <!-- 9. 【终极全屏画廊视口】沉浸全屏灯箱 + 底部胶卷缩略图 -->
+    <div id="lightbox-modal" class="fixed inset-0 z-50 bg-black/98 backdrop-blur-2xl hidden flex-col justify-between select-none transition-opacity duration-300 opacity-0 p-4 md:p-6">
+        
+        <!-- 顶部信息栏与极速关闭 -->
+        <div class="flex justify-between items-center w-full px-2 md:px-6 py-2 border-b border-white/15">
+            <div class="flex items-center space-x-4">
+                <span id="lightbox-index" class="text-xs md:text-sm font-mono text-neutral-300 font-bold tracking-widest">01 / 10</span>
+                <span id="lightbox-title" class="text-sm md:text-base text-white font-semibold tracking-wide">图片描述</span>
+            </div>
+            <button onclick="closeLightbox()" class="text-neutral-300 hover:text-white p-2.5 rounded-full border border-white/20 hover:border-white bg-neutral-900/60 transition-all flex items-center space-x-2">
+                <span class="text-xs uppercase font-mono hidden sm:inline">CLOSE [ESC]</span>
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+            </button>
+        </div>
+
+        <!-- 中间全屏大图展示区 (极限撑满视口) -->
+        <div class="relative flex-1 flex items-center justify-center w-full my-1 overflow-hidden" onclick="event.target === this && closeLightbox()">
+            <!-- 上一张 -->
+            <button onclick="prevImage(event)" class="absolute left-3 md:left-8 z-20 p-4 rounded-full bg-black/80 border border-white/30 text-white hover:bg-white hover:text-black transition-all shadow-2xl">
+                <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
+            </button>
+
+            <!-- 高清全屏大图 (96vw × 78vh 极高画幅) -->
+            <img id="lightbox-image" src="" class="max-h-[76vh] md:max-h-[80vh] max-w-[96vw] object-contain rounded-lg shadow-2xl transition-all duration-300" alt="全屏大图">
+
+            <!-- 下一张 -->
+            <button onclick="nextImage(event)" class="absolute right-3 md:right-8 z-20 p-4 rounded-full bg-black/80 border border-white/30 text-white hover:bg-white hover:text-black transition-all shadow-2xl">
+                <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+            </button>
+        </div>
+
+        <!-- 底部横向胶卷缩略图栏 -->
+        <div class="w-full border-t border-white/15 pt-3">
+            <div id="lightbox-thumbs" class="flex space-x-3 overflow-x-auto no-scrollbar py-1 justify-start md:justify-center items-center">
+                <!-- 由 JS 自动生成全部高清缩略图 -->
+            </div>
+            <div class="text-center text-xs text-neutral-400 font-mono tracking-widest mt-2 hidden sm:block">
+                CLICK THUMBNAIL TO VIEW · [ ← / → ] NAVIGATE · [ ESC ] EXIT
+            </div>
+        </div>
+
+    </div>
+
+    <!-- JS 核心交互逻辑 -->
+    <script>
+        // 1. Lenis 阻尼平滑滚动
+        const lenis = new Lenis({
+            duration: 1.2,
+            easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+            smoothWheel: true,
+        });
+        function raf(time) {
+            lenis.raf(time);
+            requestAnimationFrame(raf);
+        }
+        requestAnimationFrame(raf);
+
+        // 2. 标签分类过滤
+        function filterContent(category) {
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            const activeBtn = document.getElementById('tab-' + category);
+            if (activeBtn) activeBtn.classList.add('active');
+
+            const sections = {
+                practice: document.getElementById('section-practice'),
+                insights: document.getElementById('section-insights'),
+                about: document.getElementById('section-about')
+            };
+
+            if (category === 'all') {
+                Object.values(sections).forEach(sec => sec.style.display = 'block');
+            } else {
+                Object.keys(sections).forEach(key => {
+                    if (key === category) {
+                        sections[key].style.display = 'block';
+                        lenis.scrollTo(sections[key], { offset: -90 });
+                    } else {
+                        sections[key].style.display = 'none';
+                    }
+                });
+            }
+        }
+        function switchTab(category) { filterContent(category); }
+
+        // 3. 全屏灯箱 + 底部胶卷核心逻辑
+        let zoomableImages = [];
+        let currentIndex = 0;
+        const modal = document.getElementById('lightbox-modal');
+        const modalImg = document.getElementById('lightbox-image');
+        const modalTitle = document.getElementById('lightbox-title');
+        const modalIndex = document.getElementById('lightbox-index');
+        const thumbsContainer = document.getElementById('lightbox-thumbs');
+
+        function initLightbox() {
+            zoomableImages = Array.from(document.querySelectorAll('.zoomable-img'));
+            
+            thumbsContainer.innerHTML = '';
+            zoomableImages.forEach((img, idx) => {
+                img.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    openLightbox(idx);
+                });
+
+                const thumb = document.createElement('div');
+                thumb.className = `thumb-item shrink-0 w-14 h-14 md:w-20 md:h-20 rounded-xl overflow-hidden border-2 border-transparent opacity-40 hover:opacity-100 cursor-pointer transition-all duration-300 bg-neutral-900`;
+                thumb.innerHTML = `<img src="${img.src}" class="w-full h-full object-cover" alt="thumb">`;
+                thumb.addEventListener('click', () => {
+                    currentIndex = idx;
+                    updateLightboxContent();
+                });
+                thumbsContainer.appendChild(thumb);
+            });
+        }
+
+        function openLightbox(index) {
+            currentIndex = index;
+            updateLightboxContent();
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            setTimeout(() => modal.classList.remove('opacity-0'), 10);
+            document.body.classList.add('lightbox-active');
+        }
+
+        function closeLightbox() {
+            modal.classList.add('opacity-0');
+            setTimeout(() => {
+                modal.classList.add('hidden');
+                modal.classList.remove('flex');
+                document.body.classList.remove('lightbox-active');
+            }, 300);
+        }
+
+        function prevImage(e) {
+            if (e) e.stopPropagation();
+            currentIndex = (currentIndex - 1 + zoomableImages.length) % zoomableImages.length;
+            updateLightboxContent();
+        }
+
+        function nextImage(e) {
+            if (e) e.stopPropagation();
+            currentIndex = (currentIndex + 1) % zoomableImages.length;
+            updateLightboxContent();
+        }
+
+        function updateLightboxContent() {
+            const targetImg = zoomableImages[currentIndex];
+            modalImg.style.transform = 'scale(0.97)';
+            modalImg.style.opacity = '0.3';
+            
+            setTimeout(() => {
+                modalImg.src = targetImg.currentSrc || targetImg.src;
+                modalTitle.textContent = targetImg.alt || '不止建筑作品研读';
+                modalIndex.textContent = `${String(currentIndex + 1).padStart(2, '0')} / ${String(zoomableImages.length).padStart(2, '0')}`;
+                modalImg.style.transform = 'scale(1)';
+                modalImg.style.opacity = '1';
+
+                const allThumbs = thumbsContainer.querySelectorAll('.thumb-item');
+                allThumbs.forEach((t, i) => {
+                    if (i === currentIndex) {
+                        t.classList.add('active');
+                        t.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+                    } else {
+                        t.classList.remove('active');
+                    }
+                });
+            }, 120);
+        }
+
+        window.addEventListener('keydown', (e) => {
+            if (modal.classList.contains('hidden')) return;
+            if (e.key === 'Escape') closeLightbox();
+            if (e.key === 'ArrowLeft') prevImage();
+            if (e.key === 'ArrowRight') nextImage();
+        });
+
+        window.addEventListener('DOMContentLoaded', initLightbox);
+    </script>
+</body>
+</html>
