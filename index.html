@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>不止建筑 AMPERSAND Studio</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            user-select: none;
+        }
+        html, body {
+            height: 100vh;
+            width: 100vw;
+            overflow: hidden;
+            background-color: #ffffff;
+            color: #000000;
+            font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", "PingFang SC", "Microsoft YaHei", sans-serif;
+        }
+        .custom-scroll::-webkit-scrollbar {
+            width: 4px;
+        }
+        .custom-scroll::-webkit-scrollbar-thumb {
+            background: #000000;
+        }
+        .custom-scroll {
+            -ms-overflow-style: auto;
+            scrollbar-width: thin;
+        }
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        /* 导航项目激活态：黑底白字高亮反显 */
+        .project-item.active {
+            background-color: #000000 !important;
+            color: #ffffff !important;
+        }
+        .project-item.active span {
+            color: #ffffff !important;
+        }
+        /* 缩略图激活态 */
+        .thumb-btn.active {
+            border-color: #000000 !important;
+            opacity: 1 !important;
+            transform: scale(1.06);
+        }
+    </style>
+</head>
+<body class="flex flex-col h-screen w-screen overflow-hidden bg-white text-black">
+
+    <!-- ================= 1. 顶部先锋仪表盘导航栏 (字体加大一倍) ================= -->
+    <header class="w-full shrink-0 border-b-2 border-black grid grid-cols-12 divide-x-2 divide-black bg-white z-30">
+        
+        <!-- 0. 品牌 LOGO 列 -->
+        <div class="col-span-12 md:col-span-2 p-4 flex flex-col justify-between cursor-pointer hover:bg-neutral-50 transition-colors" onclick="goHome()">
+            <div class="flex items-center space-x-3">
+                <img src="LOGO.png" onerror="loadFallbackImg(this, ['LOGO.jpg', 'LOGO.JPG', 'LOGO.PNG'])" class="h-11 w-auto object-contain" alt="LOGO">
+                <div>
+                    <div class="font-black tracking-[0.18em] text-2xl leading-none">AMPERSAND</div>
+                    <div class="text-sm tracking-widest text-neutral-500 font-medium mt-1">不止建筑</div>
+                </div>
+            </div>
+            <div class="text-xs text-neutral-600 mt-2 font-mono leading-tight">
+                杭州 · 存量商业资产活化<br>
+                建筑 × 室内双重视角
+            </div>
+        </div>
+
+        <!-- 1. 关于与理念 (字号放大) -->
+        <div class="hidden md:block md:col-span-3 p-4 overflow-y-auto max-h-[170px] custom-scroll space-y-2 text-justify">
+            <div class="font-black flex justify-between items-center text-base pb-1 border-b-2 border-black mb-1">
+                <span>关于. / ABOUT</span>
+                <span class="font-mono text-xs text-neutral-500">AMPERSAND</span>
+            </div>
+            <p class="text-xs md:text-sm text-neutral-800 leading-relaxed font-normal">
+                不止建筑（AMPERSAND Studio）立足存量时代，致力于通过低成本高弹性的空间微干预、商业动线重组与在地文脉挖掘，消融宏观建筑结构与微观室内情绪的边界，重塑存量商业资产与城市微空间。
+            </p>
+        </div>
+
+        <!-- 2. 商业实践列表 (字号放大一倍) -->
+        <div class="col-span-6 md:col-span-4 p-4 overflow-y-auto max-h-[170px] custom-scroll space-y-1.5">
+            <div class="font-black flex justify-between items-center text-base pb-1 border-b-2 border-black mb-1">
+                <span>项目实践. / PRACTICE</span>
+                <span class="font-mono text-xs text-neutral-500">[01-03]</span>
+            </div>
+            <div class="space-y-1">
+                <button onclick="openProject('xinhu')" id="nav-xinhu" class="project-item w-full text-left px-3 py-1.5 flex justify-between items-center hover:bg-neutral-100 transition-colors font-bold text-sm md:text-base">
+                    <span class="truncate">01. 心湖之境：荒岛改造全时段滨水微度假</span>
+                    <span class="text-xs font-mono shrink-0 ml-2 text-neutral-500 font-normal">2026/文旅</span>
+                </button>
+                <button onclick="openProject('xinquji')" id="nav-xinquji" class="project-item w-full text-left px-3 py-1.5 flex justify-between items-center hover:bg-neutral-100 transition-colors font-bold text-sm md:text-base">
+                    <span class="truncate">02. 新衢记：绍兴老破大商业低预算救活实录</span>
+                    <span class="text-xs font-mono shrink-0 ml-2 text-neutral-500 font-normal">2026/餐饮</span>
+                </button>
+                <button onclick="openProject('liubai')" id="nav-liubai" class="project-item w-full text-left px-3 py-1.5 flex justify-between items-center hover:bg-neutral-100 transition-colors font-bold text-sm md:text-base">
+                    <span class="truncate">03. 留白·艺术客厅：老花窖与绿色能源更新</span>
+                    <span class="text-xs font-mono shrink-0 ml-2 text-neutral-500 font-normal">2026/策展</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- 3. 研究室 / 思考列表 (字号放大一倍) -->
+        <div class="col-span-6 md:col-span-2 p-4 overflow-y-auto max-h-[170px] custom-scroll space-y-1.5">
+            <div class="font-black flex justify-between items-center text-base pb-1 border-b-2 border-black mb-1">
+                <span>研究室. / LAB</span>
+                <span class="font-mono text-xs text-neutral-500">[01-02]</span>
+            </div>
+            <div class="space-y-1">
+                <button onclick="openProject('pingan')" id="nav-pingan" class="project-item w-full text-left px-3 py-1.5 flex justify-between items-center hover:bg-neutral-100 transition-colors font-bold text-sm md:text-base">
+                    <span class="truncate">01. 平安大街城市切片摩擦力</span>
+                    <span class="text-xs font-mono text-neutral-500 font-normal">P1-P6</span>
+                </button>
+                <button onclick="openProject('topology')" id="nav-topology" class="project-item w-full text-left px-3 py-1.5 flex justify-between items-center hover:bg-neutral-100 transition-colors font-bold text-sm md:text-base">
+                    <span class="truncate">02. 观念几何与轻量拓扑生成</span>
+                    <span class="text-xs font-mono text-neutral-500 font-normal">Z1-Z6</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- 4. 主理人与合作 -->
+        <div class="hidden md:flex md:col-span-1 p-4 flex-col justify-between">
+            <div>
+                <div class="font-black text-base pb-1 border-b-2 border-black mb-1">主理人.</div>
+                <button onclick="openProject('about')" id="nav-about" class="project-item w-full text-left px-2 py-1 hover:bg-neutral-100 block font-bold text-sm">游学实录</button>
+                <a href="mailto:contact@buzhi.studio" class="hover:underline text-xs block mt-2 font-mono font-bold text-black">MAIL ➔</a>
+            </div>
+            <div class="text-[10px] font-mono text-neutral-400">©2026 BUZHI</div>
+        </div>
+
+    </header>
+
+    <!-- ================= 2. 主展示视口区 (纯白底、无黑边) ================= -->
+    <main class="flex-1 w-full relative overflow-hidden bg-white">
+
+        <!-- ================= 模式 A：首页全屏纯图片轮播模式 (Home Slider) ================= -->
+        <div id="home-view" class="w-full h-full flex flex-col justify-between p-4 md:p-6 relative select-none">
+            
+            <!-- 轮播顶部信息与控制 -->
+            <div class="w-full flex justify-between items-center text-sm md:text-base text-neutral-600 font-mono z-20 pb-2 border-b border-neutral-200">
+                <div class="flex items-center space-x-3">
+                    <span id="slider-counter" class="font-black text-black tracking-widest text-lg md:text-xl">01 / 06</span>
+                    <span class="text-neutral-300">|</span>
+                    <span id="slider-tag" class="uppercase tracking-wider text-black font-bold">COMMERCIAL PRACTICE</span>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <span class="text-xs md:text-sm text-neutral-500 hidden sm:inline font-sans">点击图片直接进入项目详情 ➔</span>
+                    <button onclick="toggleAutoPlay()" id="play-btn" class="px-3 py-1 bg-black text-white hover:bg-neutral-800 rounded text-xs font-mono transition-all">
+                        PAUSE ⏸
+                    </button>
+                </div>
+            </div>
+
+            <!-- 轮播核心大图 (撑满视口，白底无黑边) -->
+            <div class="relative flex-1 flex items-center justify-center my-2 overflow-hidden group cursor-pointer" onclick="handleSliderClick()">
+                <!-- 左箭头 -->
+                <button onclick="event.stopPropagation(); prevSlide()" class="absolute left-4 md:left-8 z-30 p-4 rounded-full bg-white/90 hover:bg-black hover:text-white text-black border border-black transition-all shadow-xl">
+                    <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 19l-7-7 7-7"></path></svg>
+                </button>
+
+                <!-- 轮播大图容器 -->
+                <div class="relative h-full w-full flex items-center justify-center overflow-hidden">
+                    <img id="slider-image" src="" class="max-h-[72vh] md:max-h-[76vh] w-auto max-w-full object-contain transition-all duration-300 transform group-hover:scale-101" alt="轮播大图">
+                    
+                    <!-- 悬停轻提示 -->
+                    <div class="absolute bottom-4 left-4 right-4 bg-white/90 backdrop-blur-md border border-black p-4 opacity-0 group-hover:opacity-100 transition-opacity flex justify-between items-center">
+                        <div class="text-black text-lg md:text-xl font-bold tracking-tight" id="slider-hover-title">项目名称</div>
+                        <div class="text-xs font-mono font-bold text-black uppercase">CLICK TO EXPLORE ➔</div>
+                    </div>
+                </div>
+
+                <!-- 右箭头 -->
+                <button onclick="event.stopPropagation(); nextSlide()" class="absolute right-4 md:right-8 z-30 p-4 rounded-full bg-white/90 hover:bg-black hover:text-white text-black border border-black transition-all shadow-xl">
+                    <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"></path></svg>
+                </button>
+            </div>
+
+            <!-- 轮播底部胶卷指示条 -->
+            <div class="w-full flex justify-between items-center z-20 pt-2 border-t border-neutral-200">
+                <div class="text-sm md:text-base font-bold text-black" id="slider-title">
+                    01. 心湖之境：荒岛改造全时段滨水微度假空间
+                </div>
+                <div id="slider-dots" class="flex space-x-2">
+                    <!-- 动态生成 -->
+                </div>
+            </div>
+
+        </div>
+
+        <!-- ================= 模式 B：项目详情页研读模式 (全白底、图片撑满红框) ================= -->
+        <div id="detail-view" class="w-full h-full grid grid-cols-12 divide-x-2 divide-black hidden">
+            
+            <!-- 左侧：项目叙事与信息栏 -->
+            <aside class="col-span-12 md:col-span-4 lg:col-span-3 p-6 md:p-8 overflow-y-auto custom-scroll bg-white flex flex-col justify-between space-y-6 z-10">
+                <div class="space-y-5">
+                    <div class="flex justify-between items-center pb-3 border-b-2 border-black">
+                        <button onclick="goHome()" class="text-xs font-mono font-bold uppercase tracking-widest px-3 py-1.5 bg-black text-white rounded hover:bg-neutral-800 transition-colors flex items-center space-x-2">
+                            <span>← 返回轮播</span>
+                        </button>
+                        <span id="detail-tag" class="text-xs font-mono text-neutral-600 font-bold uppercase">PRACTICE // 01</span>
+                    </div>
+
+                    <!-- 项目标题 -->
+                    <h2 id="detail-title" class="text-xl md:text-2xl font-black tracking-tight text-black leading-snug">
+                        心湖之境：荒岛改造全时段滨水微度假空间
+                    </h2>
+
+                    <!-- 介绍正文 -->
+                    <div id="detail-desc" class="text-neutral-800 text-xs md:text-sm leading-relaxed space-y-3 text-justify font-normal">
+                        <!-- 动态载入 -->
+                    </div>
+
+                    <!-- 技术参数表格 -->
+                    <div id="detail-specs" class="pt-4 border-t-2 border-dashed border-neutral-300 text-xs font-mono space-y-1.5 text-neutral-700">
+                        <!-- 动态载入 -->
+                    </div>
+                </div>
+
+                <div class="pt-3 text-xs font-mono text-neutral-500 flex justify-between items-center border-t-2 border-black">
+                    <span class="font-bold">AMPERSAND STUDIO</span>
+                    <span id="detail-counter" class="font-bold text-black">1 / 9</span>
+                </div>
+            </aside>
+
+            <!-- 右侧：全幅无黑边大视口 (红框区域 100% 撑满) -->
+            <section class="col-span-12 md:col-span-8 lg:col-span-9 h-full bg-neutral-50/60 flex flex-col justify-between p-4 md:p-6 relative select-none">
+                
+                <div class="w-full flex justify-between items-center text-xs md:text-sm text-neutral-600 font-mono z-10 pb-2 border-b border-neutral-200">
+                    <span id="detail-img-name" class="tracking-wider text-black font-bold">XH4 // 滨水微度假夜景实录</span>
+                    <span class="text-neutral-400 font-sans text-xs">按键盘 [ ← / → ] 翻页</span>
+                </div>
+
+                <!-- 核心大图展示 (拉伸至最大可视比例，绝无黑边) -->
+                <div class="relative flex-1 flex items-center justify-center my-1 overflow-hidden group">
+                    <button onclick="prevDetailImg()" class="absolute left-3 md:left-6 z-20 p-3.5 rounded-full bg-white/90 hover:bg-black hover:text-white text-black border border-black transition-all shadow-xl">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 19l-7-7 7-7"></path></svg>
+                    </button>
+
+                    <img id="detail-main-img" src="" class="max-h-[76vh] md:max-h-[82vh] w-auto max-w-full object-contain transition-all duration-200 shadow-lg bg-white" alt="项目图纸">
+
+                    <button onclick="nextDetailImg()" class="absolute right-3 md:right-6 z-20 p-3.5 rounded-full bg-white/90 hover:bg-black hover:text-white text-black border border-black transition-all shadow-xl">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"></path></svg>
+                    </button>
+                </div>
+
+                <!-- 底部横向缩略图胶卷 -->
+                <div class="w-full border-t border-neutral-200 pt-2 z-10">
+                    <div id="detail-thumbs" class="flex space-x-2.5 overflow-x-auto no-scrollbar py-1 justify-start md:justify-center items-center">
+                        <!-- JS 动态生成 -->
+                    </div>
+                </div>
+
+            </section>
+
+        </div>
+
+    </main>
+
+    <!-- ================= 3. 核心交互逻辑与智能容错数据源 ================= -->
+    <script>
+        // 智能图片回退探测器 (防止大小写后缀导致图片加载失败)
+        function loadFallbackImg(imgEl, candidatePaths) {
+            let index = 0;
+            function tryNext() {
+                if (index < candidatePaths.length) {
+                    const nextSrc = candidatePaths[index++];
+                    const testImg = new Image();
+                    testImg.onload = () => { imgEl.src = nextSrc; };
+                    testImg.onerror = tryNext;
+                    testImg.src = nextSrc;
+                }
+            }
+            tryNext();
+        }
+
+        // 项目数据库 (每个图片支持 4 种后缀自动容错)
+        const projectData = {
+            xinhu: {
+                tag: "PRACTICE // 01",
+                title: "心湖之境：荒岛改造全时段滨水微度假空间",
+                desc: "<p>针对废置湖心岛屿的系统性活化策略。通过打通内外视线廊道、重塑滨水亭台与动线，将荒废场地重构为集日间微度假、品质餐饮与夜经济于一体的全时段复合场景。</p><p>面对低预算约束，以最克制的轻钢、竹木微构件介入，打通水体景观界面，构筑全时段商业流线。</p>",
+                specs: [
+                    ["项目类型", "文旅微度假 / 滨水商业更新"],
+                    ["项目坐标", "中国 · 汾湖"],
+                    ["关键策略", "全时段流线 / 低扰动轻介入"],
+                    ["主持设计", "松涛 Fred Cheung"]
+                ],
+                images: [
+                    { paths: ["xinhu/XH4.jpg", "xinhu/XH4.JPG", "xinhu/XH4.png", "xinhu/XH4.PNG"], title: "XH4 // 滨水微度假夜景实录" },
+                    { paths: ["xinhu/xh-plan.jpg", "xinhu/xh-plan.JPG", "xinhu/xh-plan.png", "xinhu/xh-plan.PNG"], title: "PLAN // 荒岛全时段总平规划图" },
+                    { paths: ["xinhu/XH1.jpg", "xinhu/XH1.JPG", "xinhu/XH1.png", "xinhu/XH1.PNG"], title: "XH1 // 绿意草坪与立面过渡" },
+                    { paths: ["xinhu/XH2.jpg", "xinhu/XH2.JPG", "xinhu/XH2.png", "xinhu/XH2.PNG"], title: "XH2 // 吧台艺术装置与灯光" },
+                    { paths: ["xinhu/XH3.jpg", "xinhu/XH3.JPG", "xinhu/XH3.png", "xinhu/XH3.PNG"], title: "XH3 // 滨水立面日景" },
+                    { paths: ["xinhu/XH10.jpg", "xinhu/XH10.JPG", "xinhu/XH10.png", "xinhu/XH10.PNG"], title: "XH10 // 暮色滨水外摆氛围" },
+                    { paths: ["xinhu/XH13.jpg", "xinhu/XH13.JPG", "xinhu/XH13.png", "xinhu/XH13.PNG"], title: "XH13 // 荒岛鸟瞰夜景实况" },
+                    { paths: ["xinhu/XH14.jpg", "xinhu/XH14.JPG", "xinhu/XH14.png", "xinhu/XH14.PNG"], title: "XH14 // 空间分析图谱" },
+                    { paths: ["xinhu/XH18.jpg", "xinhu/XH18.JPG", "xinhu/XH18.png", "xinhu/XH18.PNG"], title: "XH18 // 亲水步道与夜间照明" }
+                ]
+            },
+            xinquji: {
+                tag: "PRACTICE // 02",
+                title: "新衢记：绍兴老破大商业低预算救活实录",
+                desc: "<p>面对大尺度陈旧物业与严苛预算约束，通过模块化材料组织、光影层次重塑与出餐动线精简，以极低平方造价完成经营空间全面重构，验证存量餐饮的低成本救活模型。</p><p>改造将原先街道立面的消极破损痕迹转化为具有辨识度的先锋光影窗口，极大提升了进店客流平效。</p>",
+                specs: [
+                    ["项目类型", "存量餐饮空间更新 / 低预算救活"],
+                    ["项目坐标", "中国 · 绍兴"],
+                    ["面积造价", "极低成本模块化改建"],
+                    ["主持设计", "松涛 Fred Cheung"]
+                ],
+                images: [
+                    { paths: ["xinquji/xqj-after.jpg", "xinquji/xqj-after.JPG", "xinquji/xqj-after.png", "xinquji/xqj-after.PNG"], title: "AFTER // 改造后先锋门头夜景" },
+                    { paths: ["xinquji/xqj-berore.jpg", "xinquji/xqj-berore.JPG", "xinquji/xqj-berore.png", "xinquji/xqj-berore.PNG"], title: "BEFORE // 街道伤疤 改造前原状" },
+                    { paths: ["xinquji/xqj-pm.jpg", "xinquji/xqj-pm.JPG", "xinquji/xqj-pm.png", "xinquji/xqj-pm.PNG"], title: "PLAN // 空间动线重组与平面划分" },
+                    { paths: ["xinquji/xqj.jpg", "xinquji/xqj.JPG", "xinquji/xqj.png", "xinquji/xqj.PNG"], title: "DETAIL // 包厢端景与材质光影" },
+                    { paths: ["xinquji/xqj2.jpg", "xinquji/xqj2.JPG", "xinquji/xqj2.png", "xinquji/xqj2.PNG"], title: "DETAIL // 竹构立面与光影构造" },
+                    { paths: ["xinquji/xqj3.jpg", "xinquji/xqj3.JPG", "xinquji/xqj3.png", "xinquji/xqj3.PNG"], title: "SCENE // 室内就餐区整体氛围" }
+                ]
+            },
+            liubai: {
+                tag: "PRACTICE // 03",
+                title: "留白·艺术客厅：港口老花窖与绿色能源更新",
+                desc: "<p>盘活港口遗留的老花窖建筑群，引入被动式节能与绿色微更新技术。打造集先锋艺术策展、日咖夜酒与生活方式沙龙于一身的港口文化复合地标。</p><p>利用原有花窖结构特性强化自然通风与采光，以极小干预完成工业遗存的当代转型。</p>",
+                specs: [
+                    ["项目类型", "工业遗存更新 / 艺术策展日咖夜酒"],
+                    ["关键技术", "被动式节能 / 绿色微更新"],
+                    ["主持设计", "松涛 Fred Cheung"]
+                ],
+                images: [
+                    { paths: ["liubai/xg1.jpg", "liubai/xg1.JPG", "liubai/xg1.png", "liubai/xg1.PNG"], title: "PLATE 01 // 建筑剖面与微空间系统展板" },
+                    { paths: ["liubai/xg2.jpg", "liubai/xg2.JPG", "liubai/xg2.png", "liubai/xg2.PNG"], title: "PLATE 02 // 空间轴测与功能重构展板" }
+                ]
+            },
+            pingan: {
+                tag: "LAB & RESEARCH // 01",
+                title: "历史的穿越：平安大街城市切片与空间摩擦力研究",
+                desc: "<p>剖析历史街区界面在快速机动化进程中产生的空间割裂，建立“空间摩擦力”分析图谱，探索如何通过微小构件与界面微干预重新缝合街区烟火气与步行密度。</p><p>全套展板详尽记录了从宏观城市肌理到微观节点构件的演变推导过程。</p>",
+                specs: [
+                    ["研究范畴", "城市切片 / 空间摩擦力 / 微干预"],
+                    ["学术成果", "全套展板推演 (P1 - P6)"],
+                    ["主持研究", "松涛 Fred Cheung (西建大建筑硕士)"]
+                ],
+                images: [
+                    { paths: ["pingan/p1.jpg", "pingan/p1.JPG", "pingan/p1.png", "pingan/p1.PNG"], title: "PLATE P1 // 现状肌理与区位切片" },
+                    { paths: ["pingan/p2.jpg", "pingan/p2.JPG", "pingan/p2.png", "pingan/p2.PNG"], title: "PLATE P2 // 黑白界面空间摩擦力测绘" },
+                    { paths: ["pingan/p3.jpg", "pingan/p3.JPG", "pingan/p3.png", "pingan/p3.PNG"], title: "PLATE P3 // 城市切片历史图谱叠加" },
+                    { paths: ["pingan/p4.jpg", "pingan/p4.JPG", "pingan/p4.png", "pingan/p4.PNG"], title: "PLATE P4 // 空间微干预节点推演" },
+                    { paths: ["pingan/p5.jpg", "pingan/p5.JPG", "pingan/p5.png", "pingan/p5.PNG"], title: "PLATE P5 // 构造构件与材质策略" },
+                    { paths: ["pingan/p6.jpg", "pingan/p6.JPG", "pingan/p6.png", "pingan/p6.PNG"], title: "PLATE P6 // 空间活化整体呈现" }
+                ]
+            },
+            topology: {
+                tag: "LAB & RESEARCH // 02",
+                title: "观念几何与拓扑生成：轻量化模块住宅原型研究",
+                desc: "<p>跳出传统砌体思维，以拓扑生成逻辑推导装配式轻量化建筑体量。探索极限场地约束下的可拓展居住原型，兼顾快速拼装弹性与极简几何张力。</p><p>结合实体手工模型与参数化形态生成，提供应对未来高密城市的轻量居住解决方案。</p>",
+                specs: [
+                    ["研究范畴", "观念几何 / 拓扑生成 / 轻量装配"],
+                    ["学术成果", "实体手工模型与构造图板 (Z1 - Z6)"],
+                    ["主持研究", "松涛 Fred Cheung"]
+                ],
+                images: [
+                    { paths: ["topology/Z1.jpg", "topology/Z1.JPG", "topology/Z1.png", "topology/Z1.PNG"], title: "PLATE Z1 // 实体手工模型与形态生成" },
+                    { paths: ["topology/Z2.jpg", "topology/Z2.JPG", "topology/Z2.png", "topology/Z2.PNG"], title: "PLATE Z2 // 模块拓扑推导与规则演化" },
+                    { paths: ["topology/Z3.jpg", "topology/Z3.JPG", "topology/Z3.png", "topology/Z3.PNG"], title: "PLATE Z3 // 单元组合与内部空间排布" },
+                    { paths: ["topology/Z4.jpg", "topology/Z4.JPG", "topology/Z4.png", "topology/Z4.PNG"], title: "PLATE Z4 // 平面图纸与可变居住模式" },
+                    { paths: ["topology/Z5.jpg", "topology/Z5.JPG", "topology/Z5.png", "topology/Z5.PNG"], title: "PLATE Z5 // 装配式轻量构造与轴测拆解" },
+                    { paths: ["topology/Z6.jpg", "topology/Z6.JPG", "topology/Z6.png", "topology/Z6.PNG"], title: "PLATE Z6 // 结构剖透视与场景氛围" }
+                ]
+            },
+            about: {
+                tag: "PHILOSOPHY // 03",
+                title: "欧洲建筑游学实录与设计哲学阐述",
+                desc: "<p>毕业于“建筑老八校”之一的西安建筑科技大学（建筑学硕士），本科深造于环境艺术设计专业。长期的跨界深耕消除了“宏观建筑体量与构造”与“微观空间情绪及材质”之间的认知鸿沟。</p><p>历经欧洲各时期古典遗存与当代先锋建筑的现场研读，确立了“新旧共生、克制干预”的核心方法论，主张用最精炼的结构与材料语言让存量资产重获新生。</p>",
+                specs: [
+                    ["学术背景", "西安建筑科技大学 · 建筑学硕士"],
+                    ["执业实体", "不止建筑事务所（杭州）有限公司"],
+                    ["官方邮箱", "contact@buzhi.studio"]
+                ],
+                images: [
+                    { paths: ["about/zlr2.jpg", "about/zlr2.JPG", "about/zlr2.png", "about/zlr2.PNG"], title: "MONOGRAPH // 欧洲建筑游学实录与主理人" },
+                    { paths: ["about/zlr1.jpg", "about/zlr1.JPG", "about/zlr1.png", "about/zlr1.PNG"], title: "SKETCHES // 手绘线稿与空间意象图册" }
+                ]
+            }
+        };
+
+        // 首页轮播数据
+        const homeSlides = [
+            { key: 'xinhu', paths: ["xinhu/XH4.jpg", "xinhu/XH4.JPG", "xinhu/XH4.png", "xinhu/XH4.PNG"], tag: '01 / 文旅微度假 · 餐饮 · 夜经济', title: '心湖之境：荒岛改造全时段滨水微度假空间' },
+            { key: 'xinquji', paths: ["xinquji/xqj-after.jpg", "xinquji/xqj-after.JPG", "xinquji/xqj-after.png", "xinquji/xqj-after.PNG"], tag: '02 / 存量餐饮更新 · 低预算救活', title: '新衢记：绍兴老破大商业低预算救活实录' },
+            { key: 'liubai', paths: ["liubai/xg1.jpg", "liubai/xg1.JPG", "liubai/xg1.png", "liubai/xg1.PNG"], tag: '03 / 工业遗存更新 · 艺术策展', title: '留白·艺术客厅：港口老花窖与绿色能源更新' },
+            { key: 'pingan', paths: ["pingan/p1.jpg", "pingan/p1.JPG", "pingan/p1.png", "pingan/p1.PNG"], tag: '04 / 城市切片 · 空间摩擦力研究', title: '历史的穿越：平安大街城市切片与空间摩擦力研究' },
+            { key: 'topology', paths: ["topology/Z1.jpg", "topology/Z1.JPG", "topology/Z1.png", "topology/Z1.PNG"], tag: '05 / 观念几何 · 轻量拓扑生成', title: '观念几何与拓扑生成：轻量化模块住宅原型研究' },
+            { key: 'about', paths: ["about/zlr2.jpg", "about/zlr2.JPG", "about/zlr2.png", "about/zlr2.PNG"], tag: '06 / 主理人 · 欧洲游学与设计哲学', title: '欧洲建筑游学实录与设计哲学阐述' }
+        ];
+
+        let currentSlideIdx = 0;
+        let isAutoPlaying = true;
+        let autoPlayTimer = null;
+
+        let currentView = 'home';
+        let currentProjectKey = 'xinhu';
+        let currentDetailImgIdx = 0;
+
+        // 首页轮播
+        function updateSlide() {
+            const slide = homeSlides[currentSlideIdx];
+            const imgEl = document.getElementById('slider-image');
+            imgEl.style.opacity = '0.2';
+            setTimeout(() => {
+                loadFallbackImg(imgEl, slide.paths);
+                document.getElementById('slider-counter').textContent = `${String(currentSlideIdx + 1).padStart(2, '0')} / ${String(homeSlides.length).padStart(2, '0')}`;
+                document.getElementById('slider-tag').textContent = slide.tag;
+                document.getElementById('slider-title').textContent = `${String(currentSlideIdx + 1).padStart(2, '0')}. ${slide.title}`;
+                document.getElementById('slider-hover-title').textContent = slide.title;
+                imgEl.style.opacity = '1';
+
+                const dots = document.querySelectorAll('.slider-dot');
+                dots.forEach((dot, i) => {
+                    dot.className = `slider-dot h-2 rounded-full transition-all cursor-pointer ${i === currentSlideIdx ? 'w-8 bg-black' : 'w-2 bg-neutral-300'}`;
+                });
+            }, 120);
+        }
+
+        function prevSlide() {
+            currentSlideIdx = (currentSlideIdx - 1 + homeSlides.length) % homeSlides.length;
+            updateSlide();
+            resetAutoPlay();
+        }
+
+        function nextSlide() {
+            currentSlideIdx = (currentSlideIdx + 1) % homeSlides.length;
+            updateSlide();
+            resetAutoPlay();
+        }
+
+        function handleSliderClick() {
+            const slide = homeSlides[currentSlideIdx];
+            openProject(slide.key);
+        }
+
+        function startAutoPlay() {
+            if (autoPlayTimer) clearInterval(autoPlayTimer);
+            autoPlayTimer = setInterval(() => {
+                if (currentView === 'home' && isAutoPlaying) {
+                    currentSlideIdx = (currentSlideIdx + 1) % homeSlides.length;
+                    updateSlide();
+                }
+            }, 4500);
+        }
+
+        function resetAutoPlay() {
+            if (isAutoPlaying) startAutoPlay();
+        }
+
+        function toggleAutoPlay() {
+            isAutoPlaying = !isAutoPlaying;
+            document.getElementById('play-btn').textContent = isAutoPlaying ? 'PAUSE ⏸' : 'PLAY ▶';
+        }
+
+        // 项目详情
+        function openProject(key) {
+            currentView = 'detail';
+            currentProjectKey = key;
+            currentDetailImgIdx = 0;
+            const data = projectData[key];
+
+            document.getElementById('home-view').classList.add('hidden');
+            document.getElementById('detail-view').classList.remove('hidden');
+
+            document.querySelectorAll('.project-item').forEach(btn => btn.classList.remove('active'));
+            const navBtn = document.getElementById('nav-' + key);
+            if (navBtn) navBtn.classList.add('active');
+
+            document.getElementById('detail-tag').textContent = data.tag;
+            document.getElementById('detail-title').textContent = data.title;
+            document.getElementById('detail-desc').innerHTML = data.desc;
+
+            document.getElementById('detail-specs').innerHTML = data.specs.map(s => 
+                `<div class="flex justify-between border-b border-neutral-200 pb-1"><span>${s[0]}:</span><span class="text-black font-bold">${s[1]}</span></div>`
+            ).join('');
+
+            const thumbsContainer = document.getElementById('detail-thumbs');
+            thumbsContainer.innerHTML = '';
+            data.images.forEach((img, idx) => {
+                const thumb = document.createElement('div');
+                thumb.className = `thumb-btn shrink-0 w-14 h-14 md:w-16 md:h-16 rounded overflow-hidden border-2 border-transparent opacity-40 hover:opacity-100 cursor-pointer transition-all bg-neutral-100 shadow-sm`;
+                const thumbImg = document.createElement('img');
+                thumbImg.className = 'w-full h-full object-cover';
+                thumbImg.alt = 'thumb';
+                loadFallbackImg(thumbImg, img.paths);
+                thumb.appendChild(thumbImg);
+
+                thumb.addEventListener('click', () => {
+                    currentDetailImgIdx = idx;
+                    updateDetailImage();
+                });
+                thumbsContainer.appendChild(thumb);
+            });
+
+            updateDetailImage();
+        }
+
+        function updateDetailImage() {
+            const data = projectData[currentProjectKey];
+            const imgData = data.images[currentDetailImgIdx];
+            const imgEl = document.getElementById('detail-main-img');
+
+            imgEl.style.opacity = '0.2';
+            setTimeout(() => {
+                loadFallbackImg(imgEl, imgData.paths);
+                document.getElementById('detail-img-name').textContent = imgData.title;
+                document.getElementById('detail-counter').textContent = `${currentDetailImgIdx + 1} / ${data.images.length}`;
+                imgEl.style.opacity = '1';
+
+                const thumbs = document.querySelectorAll('.thumb-btn');
+                thumbs.forEach((t, i) => {
+                    if (i === currentDetailImgIdx) {
+                        t.classList.add('active');
+                        t.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+                    } else {
+                        t.classList.remove('active');
+                    }
+                });
+            }, 100);
+        }
+
+        function prevDetailImg() {
+            const data = projectData[currentProjectKey];
+            currentDetailImgIdx = (currentDetailImgIdx - 1 + data.images.length) % data.images.length;
+            updateDetailImage();
+        }
+
+        function nextDetailImg() {
+            const data = projectData[currentProjectKey];
+            currentDetailImgIdx = (currentDetailImgIdx + 1) % data.images.length;
+            updateDetailImage();
+        }
+
+        function goHome() {
+            currentView = 'home';
+            document.getElementById('detail-view').classList.add('hidden');
+            document.getElementById('home-view').classList.remove('hidden');
+            document.querySelectorAll('.project-item').forEach(btn => btn.classList.remove('active'));
+            resetAutoPlay();
+        }
+
+        // 键盘翻页监听
+        window.addEventListener('keydown', (e) => {
+            if (currentView === 'home') {
+                if (e.key === 'ArrowLeft') prevSlide();
+                if (e.key === 'ArrowRight') nextSlide();
+                if (e.key === 'Enter') handleSliderClick();
+            } else if (currentView === 'detail') {
+                if (e.key === 'ArrowLeft') prevDetailImg();
+                if (e.key === 'ArrowRight') nextDetailImg();
+                if (e.key === 'Escape') goHome();
+            }
+        });
+
+        // 初始化
+        window.addEventListener('DOMContentLoaded', () => {
+            const dotsContainer = document.getElementById('slider-dots');
+            dotsContainer.innerHTML = homeSlides.map((_, i) => 
+                `<div onclick="currentSlideIdx = ${i}; updateSlide(); resetAutoPlay();" class="slider-dot h-2 ${i === 0 ? 'w-8 bg-black' : 'w-2 bg-neutral-300'} rounded-full transition-all cursor-pointer"></div>`
+            ).join('');
+
+            updateSlide();
+            startAutoPlay();
+        });
+    </script>
+</body>
+</html>
