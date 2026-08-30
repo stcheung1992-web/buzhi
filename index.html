@@ -1,0 +1,983 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>不止建筑 AMPERSAND Studio</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            user-select: none;
+        }
+        html, body {
+            height: 100vh;
+            width: 100vw;
+            overflow: hidden;
+            background-color: #ffffff;
+            color: #000000;
+            font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", "PingFang SC", "Microsoft YaHei", sans-serif;
+        }
+        .custom-scroll::-webkit-scrollbar {
+            width: 4px;
+        }
+        .custom-scroll::-webkit-scrollbar-thumb {
+            background: #000000;
+        }
+        .custom-scroll {
+            -ms-overflow-style: auto;
+            scrollbar-width: thin;
+        }
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        /* 导航项目激活态：黑底白字高亮反显 */
+        .project-item.active {
+            background-color: #000000 !important;
+            color: #ffffff !important;
+        }
+        .project-item.active span {
+            color: #ffffff !important;
+        }
+        /* 缩略图激活态 */
+        .thumb-btn.active {
+            border-color: #000000 !important;
+            opacity: 1 !important;
+            transform: scale(1.06);
+        }
+    </style>
+</head>
+<body class="flex flex-col h-screen w-screen overflow-hidden bg-white text-black">
+
+    <!-- ================= 1. 顶部五列式经典先锋导航栏 (比例 13:21.75:21.75:21.75:21.75) ================= -->
+    <header class="w-full shrink-0 border-b-2 border-black grid grid-cols-1 md:grid-cols-[13%_21.75%_21.75%_21.75%_21.75%] divide-y-2 md:divide-y-0 md:divide-x-2 divide-black bg-white z-30 min-h-[220px]">
+        
+        <!-- 列 01：大尺寸 LOGO 与 工作室大标 -->
+        <div class="p-5 flex items-center justify-between cursor-pointer hover:bg-neutral-50 transition-colors" onclick="goHome()">
+            <div class="flex items-center space-x-4 w-full">
+                <!-- 左侧超大 LOGO -->
+                <img src="LOGO.png" onerror="loadFallbackImg(this, ['LOGO.jpg', 'LOGO.JPG', 'LOGO.PNG', 'images/LOGO.png', 'images/LOGO.jpg'])" class="h-28 md:h-32 w-auto object-contain shrink-0" alt="LOGO">
+                <!-- 右侧加大加粗标字 -->
+                <div class="flex flex-col justify-center leading-none">
+                    <span class="font-black tracking-wider text-2xl md:text-[28px] text-black">AMPERSAND</span>
+                    <span class="font-black tracking-wider text-2xl md:text-[28px] text-black mt-1">STUDIO</span>
+                    <span class="text-lg md:text-xl font-black tracking-widest text-black mt-2.5">不止建筑</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 列 02：关于. / ABOUT -->
+        <div class="p-4 overflow-y-auto max-h-[220px] custom-scroll flex flex-col justify-between">
+            <div class="space-y-2 text-xs md:text-[13px] text-black leading-relaxed text-justify">
+                <div class="font-black text-base md:text-lg text-black flex justify-between items-center pb-1 border-b-2 border-black mb-1.5">
+                    <span>关于. / ABOUT</span>
+                    <span class="font-mono text-[10px] text-neutral-400 font-normal">AMPERSAND</span>
+                </div>
+                <p>
+                    不止建筑AMPERSAND Studio（&）立足于“建筑学理性”与“艺术设计感性”的交汇点，事务所致力于打破学科边界，将建筑的结构秩序融入室内叙事，以双向视角介入城市更新、既有建筑改造及商业空间设计。
+                </p>
+                <p>
+                    在“不止”的场域里，设计从未是孤立的动作，工作室的核心优势在于对多重尺度关系的统合与重构。我们关注的不仅是建筑或室内本体的营造，而是通过跨界方法处理空间、结构、使用者与场所之间的系统性关系。
+                </p>
+            </div>
+        </div>
+
+        <!-- 列 03：项目实践. / PRACTICE -->
+        <div class="p-4 overflow-y-auto max-h-[220px] custom-scroll space-y-2">
+            <div class="font-black flex justify-between items-center text-base md:text-lg pb-1 border-b-2 border-black mb-1.5">
+                <span>项目实践. / PRACTICE</span>
+                <span class="font-mono text-xs text-neutral-500 font-normal">[01-03]</span>
+            </div>
+            <div class="space-y-1">
+                <button onclick="openProject('xinhu')" id="nav-xinhu" class="project-item w-full text-left px-2.5 py-1.5 flex justify-between items-center hover:bg-neutral-100 transition-colors font-bold text-sm md:text-[15px]">
+                    <span class="truncate">01. 心湖之境：荒岛改造全时段滨水微度假</span>
+                    <span class="text-[11px] font-mono shrink-0 ml-2 text-neutral-500 font-normal">2026/文旅</span>
+                </button>
+                <button onclick="openProject('xinquji')" id="nav-xinquji" class="project-item w-full text-left px-2.5 py-1.5 flex justify-between items-center hover:bg-neutral-100 transition-colors font-bold text-sm md:text-[15px]">
+                    <span class="truncate">02. 新衢记：绍兴老破大商业低预算救活实录</span>
+                    <span class="text-[11px] font-mono shrink-0 ml-2 text-neutral-500 font-normal">2026/餐饮</span>
+                </button>
+                <button onclick="openProject('liubai')" id="nav-liubai" class="project-item w-full text-left px-2.5 py-1.5 flex justify-between items-center hover:bg-neutral-100 transition-colors font-bold text-sm md:text-[15px]">
+                    <span class="truncate">03. 留白·艺术客厅：老花窖与绿色能源更新</span>
+                    <span class="text-[11px] font-mono shrink-0 ml-2 text-neutral-500 font-normal">2026/策展</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- 列 04：研究室. / LAB -->
+        <div class="p-4 overflow-y-auto max-h-[220px] custom-scroll space-y-2">
+            <div class="font-black flex justify-between items-center text-base md:text-lg pb-1 border-b-2 border-black mb-1.5">
+                <span>研究室. / LAB</span>
+                <span class="font-mono text-xs text-neutral-500 font-normal">[01-03]</span>
+            </div>
+            <div class="space-y-1">
+                <button onclick="openProject('pingan')" id="nav-pingan" class="project-item w-full text-left px-2.5 py-1.5 flex justify-between items-center hover:bg-neutral-100 transition-colors font-bold text-sm md:text-[15px]">
+                    <span class="truncate">01. 历史的穿越：平安大街城市切片与空间摩擦力研究</span>
+                    <span class="text-[11px] font-mono shrink-0 ml-2 text-neutral-500 font-normal">P1-P6</span>
+                </button>
+                <button onclick="openProject('topology')" id="nav-topology" class="project-item w-full text-left px-2.5 py-1.5 flex justify-between items-center hover:bg-neutral-100 transition-colors font-bold text-sm md:text-[15px]">
+                    <span class="truncate">02. 模块化的轻量住宅设计: 观念几何与拓扑生成</span>
+                    <span class="text-[11px] font-mono shrink-0 ml-2 text-neutral-500 font-normal">Z1-Z6</span>
+                </button>
+                <button onclick="openProject('tianmuli')" id="nav-tianmuli" class="project-item w-full text-left px-2.5 py-1.5 flex justify-between items-center hover:bg-neutral-100 transition-colors font-bold text-sm md:text-[15px]">
+                    <span class="truncate">03. 微距重构：基于场所性与日常性的市集棚架系统设计</span>
+                    <span class="text-[11px] font-mono shrink-0 ml-2 text-neutral-500 font-normal">TM1-TM10</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- 列 05：项目合作. / CONTACT -->
+        <div class="p-4 flex flex-col justify-between">
+            <div>
+                <div class="font-black text-base md:text-lg pb-1 border-b-2 border-black mb-2.5 truncate">项目合作. / CONTACT</div>
+                <div class="space-y-2 text-xs md:text-sm font-bold">
+                    <div class="flex flex-col">
+                        <span class="text-neutral-400 font-mono text-[11px] font-normal">邮箱:</span>
+                        <a href="mailto:info@buzhi.studio" class="font-mono text-black hover:underline truncate">info@buzhi.studio</a>
+                    </div>
+                    <div class="flex flex-col">
+                        <span class="text-neutral-400 font-mono text-[11px] font-normal">小红书:</span>
+                        <a href="https://www.xiaohongshu.com/user/profile/68e9c4bc0000000037004262?xsec_token=ABHP6e3gvG4EWWeojvFEuiDprW44DY_Av_moupiAbpHgE=&xsec_source=pc_search" target="_blank" rel="noopener noreferrer" class="text-black hover:underline truncate">AMPERSAND不止建筑 ↗</a>
+                    </div>
+                    <div class="flex flex-col">
+                        <span class="text-neutral-400 font-mono text-[11px] font-normal">微信:</span>
+                        <a href="https://mp.weixin.qq.com/s/RZAa1NGgZxlJHFHAyAF-1g" target="_blank" rel="noopener noreferrer" class="text-black hover:underline truncate">公众号主页 ↗</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </header>
+
+    <!-- ================= 2. 主展示视口区 ================= -->
+    <main class="flex-1 w-full relative overflow-hidden bg-white">
+
+        <!-- 模式 A：首页轮播模式 -->
+        <div id="home-view" class="w-full h-full flex flex-col justify-between p-4 md:p-6 relative select-none">
+            
+            <div class="w-full flex justify-between items-center text-sm md:text-base text-neutral-600 font-mono z-20 pb-2 border-b border-neutral-200">
+                <div class="flex items-center space-x-3">
+                    <span id="slider-counter" class="font-black text-black tracking-widest text-lg md:text-xl">01 / 06</span>
+                    <span class="text-neutral-300">|</span>
+                    <span id="slider-tag" class="uppercase tracking-wider text-black font-bold">COMMERCIAL PRACTICE</span>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <span class="text-xs md:text-sm text-neutral-500 hidden sm:inline font-sans">点击图片查看项目详情 ➔</span>
+                    <button onclick="toggleAutoPlay()" id="play-btn" class="px-3 py-1 bg-black text-white hover:bg-neutral-800 rounded text-xs font-mono transition-all">
+                        PAUSE ⏸
+                    </button>
+                </div>
+            </div>
+
+            <!-- 轮播核心大图 -->
+            <div class="relative flex-1 flex items-center justify-center my-2 overflow-hidden group cursor-pointer" onclick="handleSliderClick()">
+                <button onclick="event.stopPropagation(); prevSlide()" class="absolute left-4 md:left-8 z-30 p-4 rounded-full bg-white/90 hover:bg-black hover:text-white text-black border border-black transition-all shadow-xl">
+                    <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 19l-7-7 7-7"></path></svg>
+                </button>
+
+                <div class="relative h-full w-full flex items-center justify-center overflow-hidden">
+                    <img id="slider-image" src="" class="max-h-[66vh] md:max-h-[70vh] w-auto max-w-full object-contain transition-all duration-300 transform group-hover:scale-101 shadow-sm" alt="首页轮播大图">
+                </div>
+
+                <button onclick="event.stopPropagation(); nextSlide()" class="absolute right-4 md:right-8 z-30 p-4 rounded-full bg-white/90 hover:bg-black hover:text-white text-black border border-black transition-all shadow-xl">
+                    <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"></path></svg>
+                </button>
+            </div>
+
+            <!-- 轮播底部指示条 -->
+            <div class="w-full flex justify-between items-center z-20 pt-2 border-t border-neutral-200">
+                <div class="text-sm md:text-base font-bold text-black" id="slider-title">
+                    01. 心湖之境：荒岛改造全时段滨水微度假空间
+                </div>
+                <div id="slider-dots" class="flex space-x-2"></div>
+            </div>
+
+        </div>
+
+        <!-- 模式 B：项目详情页研读模式 -->
+        <div id="detail-view" class="w-full h-full grid grid-cols-12 divide-x-2 divide-black hidden">
+            
+            <aside class="col-span-12 md:col-span-5 lg:col-span-4 p-6 md:p-8 overflow-y-auto custom-scroll bg-white flex flex-col justify-between space-y-6 z-10">
+                <div class="space-y-6">
+                    <div class="flex justify-between items-center pb-3 border-b-2 border-black">
+                        <button onclick="goHome()" class="text-xs font-mono font-bold uppercase tracking-widest px-3 py-1.5 bg-black text-white rounded hover:bg-neutral-800 transition-colors flex items-center space-x-2">
+                            <span>← 返回轮播</span>
+                        </button>
+                        <span id="detail-tag" class="text-xs font-mono text-neutral-600 font-bold uppercase">PRACTICE // 01</span>
+                    </div>
+
+                    <h2 id="detail-title" class="text-xl md:text-2xl font-black tracking-tight text-black leading-snug">
+                        项目标题
+                    </h2>
+
+                    <div id="detail-specs" class="py-3 border-y border-neutral-200 text-xs font-mono space-y-1.5 text-neutral-700 bg-neutral-50/50 p-3 rounded"></div>
+
+                    <div id="detail-desc" class="text-neutral-800 text-xs md:text-[13px] leading-relaxed space-y-4 text-justify font-normal"></div>
+                </div>
+
+                <div class="pt-3 text-xs font-mono text-neutral-500 flex justify-between items-center border-t-2 border-black">
+                    <span class="font-bold">AMPERSAND STUDIO</span>
+                    <span id="detail-counter" class="font-bold text-black">1 / 9</span>
+                </div>
+            </aside>
+
+            <section class="col-span-12 md:col-span-7 lg:col-span-8 h-full bg-neutral-50/60 flex flex-col justify-between p-4 md:p-6 relative select-none">
+                
+                <div class="w-full flex justify-between items-center text-xs md:text-sm text-neutral-600 font-mono z-10 pb-2 border-b border-neutral-200">
+                    <span id="detail-img-name" class="tracking-wider text-black font-bold">图纸名称</span>
+                    <span class="text-neutral-400 font-sans text-xs">按键盘 [ ← / → ] 翻页</span>
+                </div>
+
+                <div class="relative flex-1 flex items-center justify-center my-1 overflow-hidden group">
+                    <button onclick="prevDetailImg()" class="absolute left-3 md:left-6 z-20 p-3.5 rounded-full bg-white/90 hover:bg-black hover:text-white text-black border border-black transition-all shadow-xl">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 19l-7-7 7-7"></path></svg>
+                    </button>
+
+                    <img id="detail-main-img" src="" class="max-h-[68vh] md:max-h-[74vh] w-auto max-w-full object-contain transition-all duration-200 shadow-md bg-white" alt="项目图纸">
+
+                    <button onclick="nextDetailImg()" class="absolute right-3 md:right-6 z-20 p-3.5 rounded-full bg-white/90 hover:bg-black hover:text-white text-black border border-black transition-all shadow-xl">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"></path></svg>
+                    </button>
+                </div>
+
+                <div class="w-full border-t border-neutral-200 pt-2 z-10">
+                    <div id="detail-thumbs" class="flex space-x-2.5 overflow-x-auto no-scrollbar py-1 justify-start md:justify-center items-center"></div>
+                </div>
+
+            </section>
+
+        </div>
+
+    </main>
+
+    <!-- ================= 3. 核心交互逻辑与数据源 ================= -->
+    <script>
+        function loadFallbackImg(imgEl, candidatePaths) {
+            let index = 0;
+            function tryNext() {
+                if (index < candidatePaths.length) {
+                    const nextSrc = candidatePaths[index++];
+                    const testImg = new Image();
+                    testImg.onload = () => { imgEl.src = nextSrc; };
+                    testImg.onerror = tryNext;
+                    testImg.src = nextSrc;
+                }
+            }
+            tryNext();
+        }
+
+        const homeSlides = [
+            {
+                key: 'xinhu',
+                code: 'S1',
+                paths: ["shouye/S1.jpg", "shouye/S1.png", "shouye/S1.JPG", "shouye/S1.PNG", "images/shouye/S1.jpg", "images/shouye/S1.png"],
+                tag: '01 / 文旅微度假 · 城市更新',
+                title: '心湖之境：荒岛改造全时段滨水微度假空间'
+            },
+            {
+                key: 'pingan',
+                code: 'S2',
+                paths: ["shouye/S2.jpg", "shouye/S2.png", "shouye/S2.JPG", "shouye/S2.PNG", "images/shouye/S2.jpg", "images/shouye/S2.png"],
+                tag: '02 / 城市切片 · 空间摩擦力研究',
+                title: '历史的穿越：平安大街城市切片与空间摩擦力研究'
+            },
+            {
+                key: 'liubai',
+                code: 'S3',
+                paths: ["shouye/S3.jpg", "shouye/S3.png", "shouye/S3.JPG", "shouye/S3.PNG", "images/shouye/S3.jpg", "images/shouye/S3.png"],
+                tag: '03 / 存量建筑改造 · 商业空间策略',
+                title: '留白 THE EMPTY · 先锋策展艺术客厅建筑改造及室内设计'
+            },
+            {
+                key: 'topology',
+                code: 'S4',
+                paths: ["shouye/S4.jpg", "shouye/S4.png", "shouye/S4.JPG", "shouye/S4.PNG", "images/shouye/S4.jpg", "images/shouye/S4.png"],
+                tag: '04 / 观念几何 · 轻量拓扑生成',
+                title: '模块化的轻量住宅设计：观念几何与拓扑生成'
+            },
+            {
+                key: 'tianmuli',
+                code: 'S5',
+                paths: ["shouye/S5.jpg", "shouye/S5.png", "shouye/S5.JPG", "shouye/S5.PNG", "images/shouye/S5.jpg", "images/shouye/S5.png"],
+                tag: '05 / 临时性装配式建筑系统 · 微观城市主义',
+                title: '微距重构：基于场所性与日常性的市集棚架系统设计'
+            },
+            {
+                key: 'xinquji',
+                code: 'S6',
+                paths: ["shouye/S6.jpg", "shouye/S6.png", "shouye/S6.JPG", "shouye/S6.PNG", "images/shouye/S6.jpg", "images/shouye/S6.png"],
+                tag: '06 / 存量资产更新 · 低预算集约化餐饮设计',
+                title: '新衢记 · 绍兴首店：老破大商业低预算救活实录'
+            }
+        ];
+
+        const projectData = {
+            xinhu: {
+                tag: "PRACTICE // 01",
+                title: "心湖之境：荒岛改造全时段滨水微度假空间",
+                specs: [
+                    ["项目名称", "心湖之境度假岛规划及建筑室内设计"],
+                    ["业主单位", "心湖之境文旅"],
+                    ["项目坐标", "中国 · 苏州"],
+                    ["设计时间", "2025年7月"],
+                    ["设计单位", "不止建筑 AMPERSAND STUDIO"],
+                    ["项目类型", "文旅微度假 / 城市更新"],
+                    ["摄影机构", "龙湫传媒"]
+                ],
+                desc: `
+                    <div class="space-y-4">
+                        <div class="font-bold text-sm text-black border-b border-black pb-1">项目阐述 / Project Profile</div>
+                        <div class="space-y-1.5">
+                            <div class="font-bold text-xs text-black">01 / 资产重塑：破解“孤岛疏离感”与“文旅商业化”的二元对立</div>
+                            <p class="text-neutral-700">对于文旅资产持有方与轻度假主理人而言，城郊湖泊中的孤岛往往兼具“天然稀缺的景观隔离感”与“初期开发成本高、业态难以闭环、客流导入受限”的双重特征。项目面对的是一处伴随岁月荒废的钢结构玻璃弧形建筑与一片原始草地。方案拒绝大拆大建的重资产投资模式，确立了“微观结构保留 + 点状机能针灸置入”的轻量化更新路径，在维持湖岛静谧疏离感的同时，将其转化为高溢价、自带自传播效应的微度假消费目的地。</p>
+                        </div>
+                        <div class="space-y-1.5">
+                            <div class="font-bold text-xs text-black">02 / 核心策略：“结构保留”与“机能置入”的双向赋能</div>
+                            <p class="text-neutral-700"><strong class="text-black">【遗留钢结构建筑 · 餐饮核心区（MOC.05）】：</strong> 完整保留原建筑充满张力的弧形大跨钢骨架与全景通透幕墙，将旧躯壳转化为复合料理中心、中央弧形环绕吧台与艺术品鉴区。红砖穹顶构架与复古原木吧台形成视觉锚点，实现“日间观景餐饮 + 夜间微醺酒馆 + 主题沙龙”的高坪效全时段运营。</p>
+                            <p class="text-neutral-700"><strong class="text-black">【全域点状针灸 · 7 大微观机能节点全景串联】：</strong> 将原本单一的荒岛游线解构为贯穿全岛的体验式动线，沿湖滨与密林精准嵌入多组轻型构筑物：</p>
+                            <ul class="list-disc pl-4 space-y-1 text-neutral-700">
+                                <li><strong>入口与水陆枢纽（MOC.01 / MOC.06）：</strong> 强化主入口形象门头与水上客运码头，建立清晰的登岛仪式感与分流效率；</li>
+                                <li><strong>引流连桥与服务驿站（MOC.02 / MOC.07）：</strong> 栈桥中途置入访客服务中心与半开放休闲驿站，拉长停留时长与消费动线；</li>
+                                <li><strong>临水观景与露天演艺（MOC.03 / MOC.04）：</strong> 布局茅草观景延展台、独立临水观景单元与下沉式滨湖卡座，直接变现一线湖景资源；夜间结合密林草坪篝火，营造沉浸式 Live 音乐现场。</li>
+                            </ul>
+                        </div>
+                        <div class="space-y-1.5">
+                            <div class="font-bold text-xs text-black">03 / 运营与商业闭环：轻介入模式下的资产长效增值</div>
+                            <ul class="space-y-1.5 text-neutral-700">
+                                <li><strong>低干预、快落地的建造成本控制：</strong> 依托既有钢结构与基础，避免大体量土建开挖，大幅压缩前期工程周期与资金沉淀风险；</li>
+                                <li><strong>高私密与多元场景赋能高客单价：</strong> 室内通透用餐、户外露天茶歇、私密独栋包厢与夜间密林音乐会形成多层次消费梯队，全方位满足商务宴请、情侣度假、品牌团建与亲子休闲的多元诉求；</li>
+                                <li><strong>天然视觉地标与社交货币效应：</strong> 水上发光字“心湖之境”结合暮色湖景与林间暖光，构建具有强烈记忆点的摄影打卡点，依托社交媒体实现低成本自发裂变引流。</li>
+                            </ul>
+                        </div>
+                        <div class="space-y-2 pt-2">
+                            <div class="font-bold text-xs text-black">04 / 商业与空间价值转化</div>
+                            <div class="border-t border-b border-black text-[11px] overflow-x-auto">
+                                <table class="w-full text-left divide-y divide-neutral-200">
+                                    <thead>
+                                        <tr class="bg-neutral-50 text-neutral-500 font-mono">
+                                            <th class="py-1.5 px-2 font-normal">核心维度</th>
+                                            <th class="py-1.5 px-2 font-normal">改造前（荒岛闲置资产痛点）</th>
+                                            <th class="py-1.5 px-2 font-bold text-black">改造后（心湖之境轻度假模型）</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="divide-y divide-neutral-100 font-sans leading-snug">
+                                        <tr>
+                                            <td class="py-2 px-2 font-bold text-black whitespace-nowrap">投资与改造成本</td>
+                                            <td class="py-2 px-2 text-neutral-600">推倒重建造价巨大，生态审批周期漫长</td>
+                                            <td class="py-2 px-2 font-bold text-black">保留弧形旧钢构与通透界面，轻量模块化快速植入</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="py-2 px-2 font-bold text-black whitespace-nowrap">业态与消费场景</td>
+                                            <td class="py-2 px-2 text-neutral-600">场景单一，缺乏核心消费载体与停留点</td>
+                                            <td class="py-2 px-2 font-bold text-black">全景复合西餐 + 滨湖露天茶歇 + 密林营地演艺复合闭环</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="py-2 px-2 font-bold text-black whitespace-nowrap">空间坪效与溢价</td>
+                                            <td class="py-2 px-2 text-neutral-600">岸线资源浪费，无法形成有效商业转化</td>
+                                            <td class="py-2 px-2 font-bold text-black">7 大节点环岛织补，独立水上观景单元拉升客单溢价</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="py-2 px-2 font-bold text-black whitespace-nowrap">引流与品牌效应</td>
+                                            <td class="py-2 px-2 text-neutral-600">缺乏昭示性，城郊孤岛客流难以导入</td>
+                                            <td class="py-2 px-2 font-bold text-black">水陆仪式感栈桥 + 社交媒体视觉锚点，形成现象级文旅地标</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                `,
+                images: [
+                    { paths: ["xinhu/XH4.jpg", "xinhu/XH4.JPG", "xinhu/XH4.png", "xinhu/XH4.PNG", "images/xinhu/XH4.jpg"], title: "XH4 // 滨水微度假夜景实录" },
+                    { paths: ["xinhu/xh-plan.jpg", "xinhu/xh-plan.JPG", "xinhu/xh-plan.png", "xinhu/xh-plan.PNG", "images/xinhu/xh-plan.jpg"], title: "PLAN // 荒岛全时段总平规划图" },
+                    { paths: ["xinhu/XH1.jpg", "xinhu/XH1.JPG", "xinhu/XH1.png", "xinhu/XH1.PNG", "images/xinhu/XH1.jpg"], title: "XH1 // 绿意草坪与立面过渡" },
+                    { paths: ["xinhu/XH2.jpg", "xinhu/XH2.JPG", "xinhu/XH2.png", "xinhu/XH2.PNG", "images/xinhu/XH2.jpg"], title: "XH2 // 吧台艺术装置与灯光" },
+                    { paths: ["xinhu/XH3.jpg", "xinhu/XH3.JPG", "xinhu/XH3.png", "xinhu/XH3.PNG", "images/xinhu/XH3.jpg"], title: "XH3 // 滨水立面日景" },
+                    { paths: ["xinhu/XH10.jpg", "xinhu/XH10.JPG", "xinhu/XH10.png", "xinhu/XH10.PNG", "images/xinhu/XH10.jpg"], title: "XH10 // 暮色滨水外摆氛围" },
+                    { paths: ["xinhu/XH13.jpg", "xinhu/XH13.JPG", "xinhu/XH13.png", "xinhu/XH13.PNG", "images/xinhu/XH13.jpg"], title: "XH13 // 荒岛鸟瞰夜景实况" },
+                    { paths: ["xinhu/XH14.jpg", "xinhu/XH14.JPG", "xinhu/XH14.png", "xinhu/XH14.PNG", "images/xinhu/XH14.jpg"], title: "XH14 // 空间分析图谱" },
+                    { paths: ["xinhu/XH18.jpg", "xinhu/XH18.JPG", "xinhu/XH18.png", "xinhu/XH18.PNG", "images/xinhu/XH18.jpg"], title: "XH18 // 亲水步道与夜间照明" }
+                ]
+            },
+            xinquji: {
+                tag: "PRACTICE // 02",
+                title: "新衢记 · 绍兴首店：老破大商业低预算救活实录",
+                specs: [
+                    ["项目名称", "新衢记 · 绍兴首店"],
+                    ["业主单位", "新衢记餐饮管理有限公司"],
+                    ["项目坐标", "中国 · 浙江 · 绍兴"],
+                    ["设计时间", "2026 年9月"],
+                    ["设计单位", "不止建筑 AMPERSAND STUDIO"],
+                    ["项目类型", "存量资产更新 / 商业首店空间重塑 / 低预算集约化餐饮设计"]
+                ],
+                desc: `
+                    <div class="space-y-4">
+                        <div class="font-bold text-sm text-black border-b border-black pb-1">项目阐述 / Project Profile</div>
+                        <div class="space-y-1.5">
+                            <div class="font-bold text-xs text-black">01 / 商业诉求：老旧存量商铺的“低预算起死回生”</div>
+                            <p class="text-neutral-700">对于餐饮主理人与商业资产持有方而言，老城底层“老破大”商铺兼具高客流区位潜力与格局散乱、管线老化、改造预算受限的现实矛盾。作为新品牌的首店落地，项目核心挑战在于：在极度受限的改造成本下，如何重塑外立面品牌昭示性，并在有限进深内最大化挖掘高客单价包厢与高效散座的坪效潜力。</p>
+                        </div>
+                        <div class="space-y-1.5">
+                            <div class="font-bold text-xs text-black">02 / 核心策略：“中央服务核（Service Core）”驱动的集约化拓扑</div>
+                            <p class="text-neutral-700">不同于传统工装设计“堆砌材质、过道浪费”的粗放模式，方案采用建筑学中极度严谨的“核心筒拓扑布局”实现极致空间集约：</p>
+                            <p class="text-neutral-700"><strong class="text-black">【中置服务核 · 管线与动线集约】：</strong> 将后厨、备餐与公共卫生间高度集成于场地正中心的“服务核心筒”，最大限度缩减给排水改造距离与隐蔽工程造价；同时实现传菜与服务半径的均等化，单边动线缩短超 30%，显著降低日常人力运营成本。</p>
+                            <p class="text-neutral-700"><strong class="text-black">【8 组隐蔽包厢 · 高客单价私密闭环】：</strong> 围绕中央服务核的外周边界，巧妙布置 8 组独立包厢（Privacy Core），利用局部折线墙体与转角玄关形成天然视线遮挡，彻底规避外围大厅散座人群的视线干扰，确保商务与家庭宴请的私密溢价。</p>
+                            <p class="text-neutral-700"><strong class="text-black">【外向散座区 · 街景互动与自然采光】：</strong> 将公共用餐区（Public Navigation Zone）与入口大堂沿街展开，依托大面积通透玻璃窗吸纳自然光，与街道界面形成良好对景，营造松弛明亮的日间就餐氛围。</p>
+                        </div>
+                        <div class="space-y-1.5">
+                            <div class="font-bold text-xs text-black">03 / 控本设计：低造价材料的高级感转译</div>
+                            <ul class="list-disc pl-4 space-y-1 text-neutral-700">
+                                <li><strong>立面重塑（街道伤疤愈合）：</strong> 采用质朴暖色肌理涂料结合局部实木斜切门头，形成内凹式迎宾入口，以极低造价打破老旧公寓底商的杂乱界面，成为街区吸睛的夜间发光锚点。</li>
+                                <li><strong>内饰质感：</strong> 室内大量运用利旧老木板、暖调微水泥肌理漆与复古藤编实木家具，以克制、温润的材质对话消解低成本痕迹，营造内敛醇厚、富有在地风土记忆的用餐体验。</li>
+                            </ul>
+                        </div>
+                        <div class="space-y-2 pt-2">
+                            <div class="font-bold text-xs text-black">04 / 商业与空间价值转化</div>
+                            <div class="border-t border-b border-black text-[11px] overflow-x-auto">
+                                <table class="w-full text-left divide-y divide-neutral-200">
+                                    <thead>
+                                        <tr class="bg-neutral-50 text-neutral-500 font-mono">
+                                            <th class="py-1.5 px-2 font-normal">核心维度</th>
+                                            <th class="py-1.5 px-2 font-normal">改造前（老旧底商痛点）</th>
+                                            <th class="py-1.5 px-2 font-bold text-black">改造后（新衢记商业首店模型）</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="divide-y divide-neutral-100 font-sans leading-snug">
+                                        <tr>
+                                            <td class="py-2 px-2 font-bold text-black whitespace-nowrap">投资与改造成本</td>
+                                            <td class="py-2 px-2 text-neutral-600">空间散乱，管网重排成本极高</td>
+                                            <td class="py-2 px-2 font-bold text-black">中置服务核集约管线，极低造价实现隐蔽工程落地</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="py-2 px-2 font-bold text-black whitespace-nowrap">空间坪效与收益</td>
+                                            <td class="py-2 px-2 text-neutral-600">进深大、暗区多，有效使用率低</td>
+                                            <td class="py-2 px-2 font-bold text-black">8 组高溢价私密包厢 + 沿街高周转散座区，坪效拉满</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="py-2 px-2 font-bold text-black whitespace-nowrap">服务与运营效率</td>
+                                            <td class="py-2 px-2 text-neutral-600">动线交叉繁琐，服务人员配置高</td>
+                                            <td class="py-2 px-2 font-bold text-black">环形服务动线，核心筒到各包厢距离最短，大幅省工</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="py-2 px-2 font-bold text-black whitespace-nowrap">品牌形象与获客</td>
+                                            <td class="py-2 px-2 text-neutral-600">街道消极死角，缺乏昭示性</td>
+                                            <td class="py-2 px-2 font-bold text-black">质朴暖调内凹门头，低成本打造高辨识度老城打卡地标</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                `,
+                images: [
+                    { paths: ["xinquji/xqj-after.jpg", "xinquji/xqj-after.JPG", "xinquji/xqj-after.png", "xinquji/xqj-after.PNG", "images/xinquji/xqj-after.png"], title: "AFTER // 改造后先锋门头夜景" },
+                    { paths: ["xinquji/xqj-berore.jpg", "xinquji/xqj-berore.JPG", "xinquji/xqj-berore.png", "xinquji/xqj-berore.PNG", "images/xinquji/xqj-berore.png"], title: "BEFORE // 街道伤疤 改造前原状" },
+                    { paths: ["xinquji/xqj-pm.jpg", "xinquji/xqj-pm.png", "xinquji/xqj-pm.JPG", "xinquji/xqj-pm.PNG", "images/xinquji/xqj-pm.png"], title: "PLAN // 空间动线重组与平面划分" },
+                    { paths: ["xinquji/xqj.jpg", "xinquji/xqj.JPG", "xinquji/xqj.png", "xinquji/xqj.PNG", "images/xinquji/xqj.png"], title: "DETAIL // 包厢端景与材质光影" },
+                    { paths: ["xinquji/xqj2.jpg", "xinquji/xqj2.JPG", "xinquji/xqj2.png", "xinquji/xqj2.PNG", "images/xinquji/xqj2.png"], title: "DETAIL // 竹构立面与光影构造" },
+                    { paths: ["xinquji/xqj3.jpg", "xinquji/xqj3.JPG", "xinquji/xqj3.png", "xinquji/xqj3.png", "images/xinquji/xqj3.png"], title: "SCENE // 室内就餐区整体氛围" }
+                ]
+            },
+            liubai: {
+                tag: "PRACTICE // 03",
+                title: "留白 THE EMPTY · 先锋策展艺术客厅建筑改造及室内设计",
+                specs: [
+                    ["项目名称", "留白 THE EMPTY · 先锋策展艺术客厅建筑改造及室内设计"],
+                    ["业主单位", "艺德文化"],
+                    ["项目坐标", "中国 · 秦皇岛"],
+                    ["设计时间", "2026年6月"],
+                    ["设计单位", "不止建筑 AMPERSAND STUDIO"],
+                    ["项目类型", "存量建筑改造 / 商业空间策略"]
+                ],
+                desc: `
+                    <div class="space-y-4">
+                        <div class="font-bold text-sm text-black border-b border-black pb-1">项目阐述 / Project Profile</div>
+                        <div class="space-y-1.5">
+                            <div class="font-bold text-xs text-black">01 / 资产洞察：从“低效闲置”到“高坪效城市策展锚点”</div>
+                            <p class="text-neutral-700">面对传统滨水工业遗存与封闭式花房等低效存量资产，常规的“纯餐饮”或“静态展厅”往往面临日间空置率高、业态单一、投资回报周期长等运营痛点。「留白 THE EMPTY」以“商业策展化 + 复合场景弹性”为底层逻辑，打破传统商用空间的单一属性，通过结构微改造与动线重构，将原始低效构筑物升级为兼具品牌孵化、社群聚合、日夜双时态运营的城市级先锋艺术客厅。</p>
+                        </div>
+                        <div class="space-y-1.5">
+                            <div class="font-bold text-xs text-black">02 / 空间运营模型：“黑白双盒”的全时段商业自闭环</div>
+                            <p class="text-neutral-700">空间采取“实体黑盒（暗） + 透光白盒（明）”的互补组合，实现 7×24h 复合业态的无缝流转：</p>
+                            <p class="text-neutral-700"><strong class="text-black">【黑盒空间 · 日夜双时态复合社交引擎】：</strong> 保留原始坚固的混凝土梁柱与工业质感，重塑为高密度的社交与消费核心。白日作为先锋咖啡、轻食与平权演出舞台（Tiny Desk），夜晚无缝切换为精酿酒吧、沉浸式演艺与音乐沙龙，实现全天候时段坪效最大化。</p>
+                            <p class="text-neutral-700"><strong class="text-black">【白盒空间 · 零边界快闪与品牌策展场】：</strong> 通透的轻钢玻璃骨架，构建无柱化、高灵活度的纯白展厅。作为承接外部品牌快闪、潮流艺术展、商业发布会与艺术品交易的多功能弹性场域，为项目带来持续的内容更新与破圈流量。</p>
+                            <p class="text-neutral-700"><strong class="text-black">【第五立面 · 垂直引流与全景露台】：</strong> 将屋顶转化为可踏步的景观大楼梯与全景露台，形成直面海风与港口天际线的立体消费动线，打造自带自传播属性（Social Currency）的网红打卡地标。</p>
+                        </div>
+                        <div class="space-y-1.5">
+                            <div class="font-bold text-xs text-black">03 / 绿色低碳赋能：看得见的运营降本与长期资产增值</div>
+                            <ul class="list-disc pl-4 space-y-1 text-neutral-700">
+                                <li><strong>77% 能源自给率：</strong> 结合屋顶光伏板系统，年发电量达 42,480 kWh，大幅降低日常高强度运营电费开支。</li>
+                                <li><strong>极速投资回收：</strong> 光伏系统综合投资约 12.3 万元，年收益可达 4.2 万元，投资回收期仅 2.9 年（系统全寿命达 25–30 年）。</li>
+                                <li><strong>ESG 资产溢价：</strong> 每年减碳 24.2 吨，为资方提供高标准的绿色建筑背书与可持续资产估值提升。</li>
+                            </ul>
+                        </div>
+                        <div class="space-y-2 pt-2">
+                            <div class="font-bold text-xs text-black">04 / 核心商业价值转化</div>
+                            <div class="border-t border-b border-black text-[11px] overflow-x-auto">
+                                <table class="w-full text-left divide-y divide-neutral-200">
+                                    <thead>
+                                        <tr class="bg-neutral-50 text-neutral-500 font-mono">
+                                            <th class="py-1.5 px-2 font-normal">价值维度</th>
+                                            <th class="py-1.5 px-2 font-normal">改造前（低效瓶颈）</th>
+                                            <th class="py-1.5 px-2 font-bold text-black">改造后（先锋商业模型）</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="divide-y divide-neutral-100 font-sans leading-snug">
+                                        <tr>
+                                            <td class="py-2 px-2 font-bold text-black whitespace-nowrap">空间属性</td>
+                                            <td class="py-2 px-2 text-neutral-600">封闭式低效遗存</td>
+                                            <td class="py-2 px-2 font-bold text-black">360° 全开放式策展客厅</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="py-2 px-2 font-bold text-black whitespace-nowrap">业态坪效</td>
+                                            <td class="py-2 px-2 text-neutral-600">单一时段单一功能</td>
+                                            <td class="py-2 px-2 font-bold text-black">日咖夜酒 + 沉浸式吧台 + 弹性展演</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="py-2 px-2 font-bold text-black whitespace-nowrap">客群参与</td>
+                                            <td class="py-2 px-2 text-neutral-600">单向路过 / 无法停留</td>
+                                            <td class="py-2 px-2 font-bold text-black">全时段社群社交 + 高频快闪活动</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="py-2 px-2 font-bold text-black whitespace-nowrap">能耗效益</td>
+                                            <td class="py-2 px-2 text-neutral-600">高能耗运营负担</td>
+                                            <td class="py-2 px-2 font-bold text-black">BIPV 低碳自给（77% 能耗覆盖）</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                `,
+                images: [
+                    { paths: ["liubai/xg1.jpg", "liubai/xg1.JPG", "liubai/xg1.png", "liubai/xg1.PNG", "images/liubai/xg1.png"], title: "PLATE 01 // 建筑剖面与微空间系统展板" },
+                    { paths: ["liubai/xg2.jpg", "liubai/xg2.JPG", "liubai/xg2.png", "liubai/xg2.PNG", "images/liubai/xg2.png"], title: "PLATE 02 // 空间轴测与功能重构展板" },
+                    { paths: ["liubai/xg3.jpg", "liubai/xg3.JPG", "liubai/xg3.png", "liubai/xg3.PNG", "images/liubai/xg3.png"], title: "PLATE 03 // 核心区模型分解展板" },
+                    { paths: ["liubai/xg4.jpg", "liubai/xg4.JPG", "liubai/xg4.png", "liubai/xg4.PNG", "images/liubai/xg4.png"], title: "PLATE 04 // 平面规划与实景呈现" },
+                    { paths: ["liubai/xg5.jpg", "liubai/xg5.JPG", "liubai/xg5.png", "liubai/xg5.PNG", "images/liubai/xg5.png"], title: "PLATE 05 // 剖透视与场景细节" }
+                ]
+            },
+            pingan: {
+                tag: "LAB & RESEARCH // 01",
+                title: "历史的穿越：平安大街城市切片与空间摩擦力研究 (TRANS-HISTORICAL RELATIVITY)",
+                specs: [
+                    ["项目名称", "历史的穿越：平安大街城市切片与空间摩擦力研究"],
+                    ["业主单位", "中国建筑设计研究院「中间思库」第七期"],
+                    ["学术主持", "崔愷 院士"],
+                    ["学术指导", "徐磊 总建筑师"],
+                    ["项目坐标", "中国 · 北京 · 平安里大街核心片区"],
+                    ["设计时间", "2021 年7月"],
+                    ["设计单位", "不止建筑 AMPERSAND STUDIO"],
+                    ["项目类型", "城市更新研究 / 历史街区存量资产微干预 / 概念性空间策略"]
+                ],
+                desc: `
+                    <div class="space-y-4">
+                        <div class="font-bold text-sm text-black border-b border-black pb-1">项目阐述 / Project Profile</div>
+                        <div class="space-y-1.5">
+                            <div class="font-bold text-xs text-black">01 / 存量困局：干道割裂下的“高价值死角”与流动性阻滞</div>
+                            <p class="text-neutral-700">在当代高密度历史旧城的存量更新中，持有核心区位资产的资方常面临一个悖论：明明身处城市核心，周边汇集极高的人口与轨交客流，但由于早期宽阔市政大道的粗暴切穿与封闭高墙的阻隔，街区内部往往沦为可达性极差的“死胡同孤岛”。大量潜在的商业与文化消费人群被快速干道和消极界面直接“甩出”，导致资产内部的客流转化率低下、微观空间坪效失活。</p>
+                        </div>
+                        <div class="space-y-1.5">
+                            <div class="font-bold text-xs text-black">02 / 空间诊断：从“速度机械性”到“微观空间摩擦力”</div>
+                            <p class="text-neutral-700">不同于常规工装设计公司浮于表面的“立面贴皮仿古”，本研究深入城市形态学与扬·盖尔（Jan Gehl）公共空间行为模型，建立了一套基于“快与慢·时空相对论”的诊断机制。研究发现：阻碍客流进入旧城毛细街区的并非距离，而是空间界面造成的“摩擦力”失衡。粗暴的拆建阻断了南北胡同的微循环，让必要性通行（通勤/就医）高度拥堵，而自发性消费（游憩/漫步）则无处落脚。</p>
+                        </div>
+                        <div class="space-y-1.5">
+                            <div class="font-bold text-xs text-black">03 / 资产重塑策略：以“界面之墙”微干预撬动整体街区激活</div>
+                            <p class="text-neutral-700">项目摒弃大拆大建的高造价与长周期风险，采取精准手术式的“空间微干预”策略，构建由基础设施向内街深度渗透的高价值动线网络：</p>
+                            <p class="text-neutral-700"><strong class="text-black">【拓扑织补 · 轨交红利向内渗透】：</strong> 打通被阻断的尽端路与封闭孤岛，重构平安里四线换乘枢纽向胡同深处的步行网络，将日均数万级的地下轨交过境人流高效导入内街，直接转化为街区资产的有效客流。</p>
+                            <p class="text-neutral-700"><strong class="text-black">【界面之墙 · 四组空间微干预模型】：</strong> 提炼传统北京“高墙夹道”的场所意向，通过轻型钢结构、通透格栅与半透玻璃砖，在消极断裂带中植入四组模块化微构架：</p>
+                            <ul class="list-disc pl-4 space-y-1 text-neutral-700">
+                                <li><strong>A / 遮蔽之墙（消隐与界面退让）：</strong> 将消极违建与设施暗化消隐，退让出开阔的线性漫步视线；</li>
+                                <li><strong>B / 停留之墙（缓冲与动态共享）：</strong> 置换封闭实墙，形成早晚高峰缓冲带与全时段微观休憩界面；</li>
+                                <li><strong>C / 便利之墙（凹凸折线与微型商业植入）：</strong> 创造街巷进退口袋，灵活复合自动零售、快递寄存等微型便民服务，拉升狭窄街道弹性；</li>
+                                <li><strong>D / 生活之墙（日常催化与社群激活）：</strong> 打破新老社区隔阂，构建集成座椅、绿化与交往的多义空间支架，培育高粘性在地社群。</li>
+                            </ul>
+                        </div>
+                        <div class="space-y-2 pt-2">
+                            <div class="font-bold text-xs text-black">04 / 核心价值转化与资方收益</div>
+                            <div class="border-t border-b border-black text-[11px] overflow-x-auto">
+                                <table class="w-full text-left divide-y divide-neutral-200">
+                                    <thead>
+                                        <tr class="bg-neutral-50 text-neutral-500 font-mono">
+                                            <th class="py-1.5 px-2 font-normal">维度</th>
+                                            <th class="py-1.5 px-2 font-normal">传统改造方式（市场工装）</th>
+                                            <th class="py-1.5 px-2 font-bold text-black">本案微干预更新策略（先锋系统性）</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="divide-y divide-neutral-100 font-sans leading-snug">
+                                        <tr>
+                                            <td class="py-2 px-2 font-bold text-black whitespace-nowrap">投资与实施成本</td>
+                                            <td class="py-2 px-2 text-neutral-600">盲目大拆大建，审批阻力大、周期长、造价高</td>
+                                            <td class="py-2 px-2 font-bold text-black">小尺度轻量构件植入，低干扰、可快速模块化落地</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="py-2 px-2 font-bold text-black whitespace-nowrap">客流动线与引流</td>
+                                            <td class="py-2 px-2 text-neutral-600">孤立于外部干道，内部死角无法形成闭环</td>
+                                            <td class="py-2 px-2 font-bold text-black">缝合地下轨交与地面网络，全时段引流渗透</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="py-2 px-2 font-bold text-black whitespace-nowrap">空间界面价值</td>
+                                            <td class="py-2 px-2 text-neutral-600">冰冷消极围墙，单纯作为物理隔离</td>
+                                            <td class="py-2 px-2 font-bold text-black">转化为可停留、可消费、可互动的多义界面之墙</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="py-2 px-2 font-bold text-black whitespace-nowrap">文化与资产溢价</td>
+                                            <td class="py-2 px-2 text-neutral-600">符号化仿古拼贴，缺乏学术支撑与传播力</td>
+                                            <td class="py-2 px-2 font-bold text-black">先锋形态学理论赋能，打造具备学术与话题度的标杆资产</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                `,
+                images: [
+                    { paths: ["pingan/p1.jpg", "pingan/p1.JPG", "pingan/p1.png", "pingan/p1.PNG", "images/pingan/p1.png"], title: "PLATE P1 // 现状肌理与区位切片" },
+                    { paths: ["pingan/p2.jpg", "pingan/p2.JPG", "pingan/p2.png", "pingan/p2.PNG", "images/pingan/p2.png"], title: "PLATE P2 // 黑白界面空间摩擦力测绘" },
+                    { paths: ["pingan/p3.jpg", "pingan/p3.JPG", "pingan/p3.png", "pingan/p3.PNG", "images/pingan/p3.png"], title: "PLATE P3 // 城市切片历史图谱叠加" },
+                    { paths: ["pingan/p4.jpg", "pingan/p4.JPG", "pingan/p4.png", "pingan/p4.PNG", "images/pingan/p4.png"], title: "PLATE P4 // 空间微干预节点推演" },
+                    { paths: ["pingan/p5.jpg", "pingan/p5.JPG", "pingan/p5.png", "pingan/p5.PNG", "images/pingan/p5.png"], title: "PLATE P5 // 构造构件与材质策略" },
+                    { paths: ["pingan/p6.jpg", "pingan/p6.JPG", "pingan/p6.png", "pingan/p6.PNG", "images/pingan/p6.png"], title: "PLATE P6 // 空间活化整体呈现" }
+                ]
+            },
+            topology: {
+                tag: "LAB & RESEARCH // 02",
+                title: "模块化的轻量住宅设计：观念几何与拓扑生成 (MODULAR LIGHTWEIGHT HOUSING)",
+                specs: [
+                    ["项目名称", "模块化的轻量住宅设计：观念几何与拓扑生成"],
+                    ["业主单位", "纯粹建筑学本体研究 / 先锋居住原型探索（独立学术研究）"],
+                    ["项目坐标", "概念试验场 · 典型山地聚落边缘"],
+                    ["设计时间", "2015 年"],
+                    ["设计单位", "不止建筑 AMPERSAND STUDIO"],
+                    ["项目类型", "建筑本体论研究 / 拓扑体素集合住宅 / 极简模块化原型"]
+                ],
+                desc: `
+                    <div class="space-y-4">
+                        <div class="font-bold text-sm text-black border-b border-black pb-1">项目阐述 / Project Profile</div>
+                        <div class="space-y-1.5">
+                            <div class="font-bold text-xs text-black">01 / 思想源起：从概念艺术到绝对理性秩序的本体转译</div>
+                            <p class="text-neutral-700">本研究跳脱出常规商业工装与住宅开发的符号化拼贴，回归建筑学本体论（Architectural Ontology）的核心命题：空间形式的自主生成与拓扑建构。设计以观念艺术家索尔·勒维特（Sol LeWitt）的“不完整开式立方体变体”（Variations of Incomplete Open Cubes, 1974）为理论母题，将“系统化组合变体（Serial Combinatorics）”与“基于网格的规则生成”转化为空间发生学逻辑，探索绝对理性的几何秩序如何在异质场地中自主演化。</p>
+                        </div>
+                        <div class="space-y-1.5">
+                            <div class="font-bold text-xs text-black">02 / 空间生成：3×3×3体素解构与四维互补咬合</div>
+                            <p class="text-neutral-700">区别于传统集合住宅基于二维平面的机械式“切分与拼贴”，本方案开创性地在三维连续体素中推演：</p>
+                            <p class="text-neutral-700"><strong class="text-black">【体素解构与正负互补】：</strong> 将一个3×3×3的基准立方母体解构为 4 个形态各异但拓扑互补的标准非标体块（A/B/C/D）。每个子空间呈现为彼此唯一的几何负形，拼合后回归为绝对纯粹的高密立方母体。</p>
+                            <p class="text-neutral-700"><strong class="text-black">【公摊消解与立体内化】：</strong> 彻底取缔冗余的公共走道与封闭楼梯间，将垂直交通、储藏及设备管井完全内化于私人起居动线之中，实现内部有效容积率与使用效率的极致集约。</p>
+                            <p class="text-neutral-700"><strong class="text-black">【微气候与垂直动静梯度】：</strong> 错层咬合的 L 型与 T 型体块打破了单一朝向限制，使四户均获得双向自然采光与对流通风；空间自下而上建立起从“首层社交起居”到“二层半私密拓展”，再到“三层绝对私密主卧”的垂直梯度序列。</p>
+                        </div>
+                        <div class="space-y-1.5">
+                            <div class="font-bold text-xs text-black">03 / 场地哲学：“异质介入”与全场景自适应演变</div>
+                            <p class="text-neutral-700">方案截取自然紧密等高线与南侧离散自发民居的交界切片作为“实验测试场（Testing Ground）”，建立起纯粹人工几何与自发有机秩序的辩证张力：</p>
+                            <p class="text-neutral-700"><strong class="text-black">【单体置入的坐标锚定】：</strong> 作为“异质介入体（Heterogeneous Insert）”，立方住宅在规整地块中以紧凑母体高效锚固，重塑图底关系基准。</p>
+                            <p class="text-neutral-700"><strong class="text-black">【群落生长的解构适应】：</strong> 在零散闲置宅基地或消极坡地中，立方母体可逆向解构为独立的子单体，顺应等高线与微观巷道有机离散生长，验证了该原型从“极点母体”到“解构式聚落”的全场景演化韧性。</p>
+                        </div>
+                        <div class="space-y-2 pt-2">
+                            <div class="font-bold text-xs text-black">04 / 学术价值与研究方法论</div>
+                            <div class="border-t border-b border-black text-[11px] overflow-x-auto">
+                                <table class="w-full text-left divide-y divide-neutral-200">
+                                    <thead>
+                                        <tr class="bg-neutral-50 text-neutral-500 font-mono">
+                                            <th class="py-1.5 px-2 font-normal">研究维度</th>
+                                            <th class="py-1.5 px-2 font-normal">市场常规住宅设计</th>
+                                            <th class="py-1.5 px-2 font-bold text-black">本案建筑学术本体研究（先锋学术性）</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="divide-y divide-neutral-100 font-sans leading-snug">
+                                        <tr>
+                                            <td class="py-2 px-2 font-bold text-black whitespace-nowrap">生成逻辑</td>
+                                            <td class="py-2 px-2 text-neutral-600">平面功能分区驱动（二维排布）</td>
+                                            <td class="py-2 px-2 font-bold text-black">观念几何与三维体素拓扑咬合（三维发生学）</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="py-2 px-2 font-bold text-black whitespace-nowrap">空间效率</td>
+                                            <td class="py-2 px-2 text-neutral-600">依赖公共走廊与楼梯核，公摊高</td>
+                                            <td class="py-2 px-2 font-bold text-black">垂直流线内化，零走道（Zero-Corridor）极限集约</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="py-2 px-2 font-bold text-black whitespace-nowrap">场地关系</td>
+                                            <td class="py-2 px-2 text-neutral-600">被动顺应地形或粗暴平整场地</td>
+                                            <td class="py-2 px-2 font-bold text-black">“单体锚固”与“解构群落生长”的双向适应机制</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="py-2 px-2 font-bold text-black whitespace-nowrap">构造深度</td>
+                                            <td class="py-2 px-2 text-neutral-600">标准化幕墙贴皮</td>
+                                            <td class="py-2 px-2 font-bold text-black">外立面穿孔铝板、单元幕墙与装配式钢构的精准交接</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                `,
+                images: [
+                    { paths: ["topology/Z1.jpg", "topology/Z1.JPG", "topology/Z1.png", "topology/Z1.PNG", "images/topology/Z1.png"], title: "PLATE Z1 // 实体手工模型与形态生成" },
+                    { paths: ["topology/Z2.jpg", "topology/Z2.JPG", "topology/Z2.png", "topology/Z2.PNG", "images/topology/Z2.png"], title: "PLATE Z2 // 模块拓扑推导与规则演化" },
+                    { paths: ["topology/Z3.jpg", "topology/Z3.JPG", "topology/Z3.png", "topology/Z3.PNG", "images/topology/Z3.png"], title: "PLATE Z3 // 单元组合与内部空间排布" },
+                    { paths: ["topology/Z4.jpg", "topology/Z4.JPG", "topology/Z4.png", "topology/Z4.PNG", "images/topology/Z4.png"], title: "PLATE Z4 // 平面图纸与可变居住模式" },
+                    { paths: ["topology/Z5.jpg", "topology/Z5.JPG", "topology/Z5.png", "topology/Z5.PNG", "images/topology/Z5.png"], title: "PLATE Z5 // 装配式轻量构造与轴测拆解" },
+                    { paths: ["topology/Z6.jpg", "topology/Z6.JPG", "topology/Z6.png", "topology/Z6.PNG", "images/topology/Z6.png"], title: "PLATE Z6 // 结构剖透视与场景氛围" }
+                ]
+            },
+            tianmuli: {
+                tag: "LAB & RESEARCH // 03",
+                title: "微距重构：基于场所性与日常性的市集棚架系统设计",
+                specs: [
+                    ["项目名称", "微距重构：基于场所性与日常性的市集棚架系统设计"],
+                    ["业主单位 / 竞标赛事", "首届 LOCUS 天目里国际街区创意市集竞赛"],
+                    ["项目坐标", "中国 · 杭州 · 天目里街区"],
+                    ["设计时间", "2026年6月"],
+                    ["设计单位", "不止建筑 AMPERSAND STUDIO"],
+                    ["项目类型", "微观城市主义研究 / 临时性装配式建筑系统 / 工业产品化概念研发"]
+                ],
+                desc: `
+                    <div class="space-y-4">
+                        <div class="font-bold text-sm text-black border-b border-black pb-1">项目阐述 / Project Profile</div>
+                        <div class="space-y-1.5">
+                            <div class="font-bold text-xs text-black">01 / 理论原点：克制介入与微观城市主义（Micro-Urbanism）</div>
+                            <p class="text-neutral-700">天目里作为伦佐·皮亚诺（Renzo Piano）设计的精密建筑群，其“硬质外壳与柔软内核”构成了强烈的场所秩序。面对临时性创意市集的需求，常规商业设计往往倾向于制造一次性、喧宾夺主的浮夸视觉装置，破坏了街区原有的建筑纯粹性。</p>
+                            <p class="text-neutral-700">本研究提出“微距重构（Micro-Urbanism）”理念，探索一种“非侵入式的轻量化基础设施”：以建筑学的结构理性介入微观公共界面，在尊重场地原有语境的前提下，重塑高频弹性的日常市集秩序。</p>
+                        </div>
+                        <div class="space-y-1.5">
+                            <div class="font-bold text-xs text-black">02 / 建构体系：从传统榫卯到“零螺丝”装配式工业系统</div>
+                            <p class="text-neutral-700">方案将建筑构造深度下沉至“工业产品级”的零件逻辑，研发了一套兼具结构力学与极简美学的轻量化装配骨架：</p>
+                            <p class="text-neutral-700"><strong class="text-black">【十字互锁枢纽 · 现代榫卯转译】：</strong> 借鉴传统木构的榫卯受力智慧，开发出“零开模、零螺丝”的双插销锁定节点（Spring Plunger System）。通过激光切割钢板实现极低制造成本，依靠构件自身重力与插销即刻锁死，装配时间缩短至秒级，两人仅需 15 分钟即可完成单套徒手搭建。</p>
+                            <p class="text-neutral-700"><strong class="text-black">【物质性对话 · 柔性与刚性的平衡】：</strong> 选用阳极氧化铝型材作为耐久主骨架，顶部采用 TPU 充气膜构筑物（4–5 秒极速充气成型），下部围护结合轻质杜邦纸（Tyvek）磁吸界面，消除了“店内与店外”的硬性隔阂，夜晚形成温润呼吸感的微光灯笼景观。</p>
+                        </div>
+                        <div class="space-y-1.5">
+                            <div class="font-bold text-xs text-black">03 / 空间拓扑与场景弹性：从“单体”到“有机聚落”的繁衍系统</div>
+                            <p class="text-neutral-700">通过标准化的万能横杆模数（50mm / 850mm / 1100mm / 1800mm），驱动无限的内容生成可能：</p>
+                            <p class="text-neutral-700"><strong class="text-black">【三大功能类型学（Typology A/B/C）】：</strong> 快速适配“咖啡轻餐（U型操作台）”、“独立出版/陈列（L型展示面）”与“文创手作（全开放冲孔网板）”等异质业态需求。</p>
+                            <p class="text-neutral-700"><strong class="text-black">【从 1 到 80 的聚落生成】：</strong> 单体几何具备独立美感，4 组单元可通过标准化构件实现背对背/L 型拼接，80 套单元在天目里下沉广场聚合为起伏律动的微观天际线；底部预留贯通走线槽，实现“手拉手”暗藏式串联供电，维护地面整洁。</p>
+                            <p class="text-neutral-700"><strong class="text-black">【85% 极限空间折叠率】：</strong> 展开尺寸 2.5 ×2.5×2.8m的构筑物，收纳后可压缩至2.5×0.6m×0.5，单套可无缝嵌入标准园区物流电瓶车，实现高效仓储与流转。</p>
+                        </div>
+                        <div class="space-y-2 pt-2">
+                            <div class="font-bold text-xs text-black">04 / 核心价值与研究方法论</div>
+                            <div class="border-t border-b border-black text-[11px] overflow-x-auto">
+                                <table class="w-full text-left divide-y divide-neutral-200">
+                                    <thead>
+                                        <tr class="bg-neutral-50 text-neutral-500 font-mono">
+                                            <th class="py-1.5 px-2 font-normal">评估维度</th>
+                                            <th class="py-1.5 px-2 font-normal">传统市集帐篷 / 临时装置</th>
+                                            <th class="py-1.5 px-2 font-bold text-black">本案微距重构系统（产品化装配建筑）</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="divide-y divide-neutral-100 font-sans leading-snug">
+                                        <tr>
+                                            <td class="py-2 px-2 font-bold text-black whitespace-nowrap">场地关系</td>
+                                            <td class="py-2 px-2 text-neutral-600">视觉冲突强烈，破坏高品质街区界面</td>
+                                            <td class="py-2 px-2 font-bold text-black">结构留白与半透材质，融入天目里精密语境</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="py-2 px-2 font-bold text-black whitespace-nowrap">建造与运维</td>
+                                            <td class="py-2 px-2 text-neutral-600">依赖螺丝工具，损耗大，寿命短（一次性）</td>
+                                            <td class="py-2 px-2 font-bold text-black">“零工具”徒手插接装配，易损件独立替换，3年+长效循环</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="py-2 px-2 font-bold text-black whitespace-nowrap">业态适应性</td>
+                                            <td class="py-2 px-2 text-neutral-600">固定桌面，无法满足多元商品陈列</td>
+                                            <td class="py-2 px-2 font-bold text-black">万能模数横杆，自由切换吧台、书架、冲孔挂网</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="py-2 px-2 font-bold text-black whitespace-nowrap">仓储与物流</td>
+                                            <td class="py-2 px-2 text-neutral-600">构件笨重散乱，园区运输与存放成本高</td>
+                                            <td class="py-2 px-2 font-bold text-black">85% 体积压缩率，适配标准园区电瓶车物流体系</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                `,
+                images: [
+                    { paths: ["TML/TM1.jpg", "TML/TM1.JPG", "TML/TM1.png", "TML/TM1.PNG", "images/TML/TM1.jpg", "images/TML/TM1.png"], title: "PLATE TM1 // 理念与原点 CONCEPT & ORIGIN" },
+                    { paths: ["TML/TM2.jpg", "TML/TM2.JPG", "TML/TM2.png", "TML/TM2.PNG", "images/TML/TM2.jpg", "images/TML/TM2.png"], title: "PLATE TM2 // 单体视野 OVERALL VISION" },
+                    { paths: ["TML/TM3.jpg", "TML/TM3.JPG", "TML/TM3.png", "TML/TM3.PNG", "images/TML/TM3.jpg", "images/TML/TM3.png"], title: "PLATE TM3 // 总体视野 OVERALL VISION" },
+                    { paths: ["TML/TM4.jpg", "TML/TM4.JPG", "TML/TM4.png", "TML/TM4.PNG", "images/TML/TM4.jpg", "images/TML/TM4.png"], title: "PLATE TM4 // 场景推演 SCENE PRESENTATION" },
+                    { paths: ["TML/TM5.jpg", "TML/TM5.JPG", "TML/TM5.png", "TML/TM5.PNG", "images/TML/TM5.jpg", "images/TML/TM5.png"], title: "PLATE TM5 // 场景推演 SCENE PRESENTATION" },
+                    { paths: ["TML/TM6.jpg", "TML/TM6.JPG", "TML/TM6.png", "TML/TM6.PNG", "images/TML/TM6.jpg", "images/TML/TM6.png"], title: "PLATE TM6 // 构造节点 STRUCTURAL NODES" },
+                    { paths: ["TML/TM7.jpg", "TML/TM7.JPG", "TML/TM7.png", "TML/TM7.PNG", "images/TML/TM7.jpg", "images/TML/TM7.png"], title: "PLATE TM7 // 构造节点 STRUCTURAL NODES" },
+                    { paths: ["TML/TM8.jpg", "TML/TM8.JPG", "TML/TM8.png", "TML/TM8.PNG", "images/TML/TM8.jpg", "images/TML/TM8.png"], title: "PLATE TM8 // 空间折叠 STORAGE & PACKAGING" },
+                    { paths: ["TML/TM9.jpg", "TML/TM9.JPG", "TML/TM9.png", "TML/TM9.PNG", "images/TML/TM9.jpg", "images/TML/TM9.png"], title: "PLATE TM9 // 装配流程 ASSEMBLY FLOW" },
+                    { paths: ["TML/TM10.jpg", "TML/TM10.JPG", "TML/TM10.png", "TML/TM10.PNG", "images/TML/TM10.jpg", "images/TML/TM10.png"], title: "PLATE TM10 // 场景弹性 MULTI-SCENE TYPOLOGY" }
+                ]
+            }
+        };
+
+        let currentSlideIdx = 0;
+        let isAutoPlaying = true;
+        let autoPlayTimer = null;
+
+        let currentView = 'home';
+        let currentProjectKey = 'xinhu';
+        let currentDetailImgIdx = 0;
+
+        function updateSlide() {
+            const slide = homeSlides[currentSlideIdx];
+            const imgEl = document.getElementById('slider-image');
+            imgEl.style.opacity = '0.2';
+            setTimeout(() => {
+                loadFallbackImg(imgEl, slide.paths);
+                document.getElementById('slider-counter').textContent = `${String(currentSlideIdx + 1).padStart(2, '0')} / ${String(homeSlides.length).padStart(2, '0')}`;
+                document.getElementById('slider-tag').textContent = `${slide.code} · ${slide.tag}`;
+                document.getElementById('slider-title').textContent = `${String(currentSlideIdx + 1).padStart(2, '0')}. ${slide.title}`;
+                imgEl.style.opacity = '1';
+
+                const dots = document.querySelectorAll('.slider-dot');
+                dots.forEach((dot, i) => {
+                    dot.className = `slider-dot h-2 rounded-full transition-all cursor-pointer ${i === currentSlideIdx ? 'w-8 bg-black' : 'w-2 bg-neutral-300'}`;
+                });
+            }, 120);
+        }
+
+        function prevSlide() {
+            currentSlideIdx = (currentSlideIdx - 1 + homeSlides.length) % homeSlides.length;
+            updateSlide();
+            resetAutoPlay();
+        }
+
+        function nextSlide() {
+            currentSlideIdx = (currentSlideIdx + 1) % homeSlides.length;
+            updateSlide();
+            resetAutoPlay();
+        }
+
+        function handleSliderClick() {
+            const slide = homeSlides[currentSlideIdx];
+            openProject(slide.key);
+        }
+
+        function startAutoPlay() {
+            if (autoPlayTimer) clearInterval(autoPlayTimer);
+            autoPlayTimer = setInterval(() => {
+                if (currentView === 'home' && isAutoPlaying) {
+                    currentSlideIdx = (currentSlideIdx + 1) % homeSlides.length;
+                    updateSlide();
+                }
+            }, 4500);
+        }
+
+        function resetAutoPlay() {
+            if (isAutoPlaying) startAutoPlay();
+        }
+
+        function toggleAutoPlay() {
+            isAutoPlaying = !isAutoPlaying;
+            document.getElementById('play-btn').textContent = isAutoPlaying ? 'PAUSE ⏸' : 'PLAY ▶';
+        }
+
+        function openProject(key) {
+            currentView = 'detail';
+            currentProjectKey = key;
+            currentDetailImgIdx = 0;
+            const data = projectData[key];
+
+            document.getElementById('home-view').classList.add('hidden');
+            document.getElementById('detail-view').classList.remove('hidden');
+
+            document.querySelectorAll('.project-item').forEach(btn => btn.classList.remove('active'));
+            const navBtn = document.getElementById('nav-' + key);
+            if (navBtn) navBtn.classList.add('active');
+
+            document.getElementById('detail-tag').textContent = data.tag;
+            document.getElementById('detail-title').textContent = data.title;
+            document.getElementById('detail-desc').innerHTML = data.desc;
+
+            document.getElementById('detail-specs').innerHTML = data.specs.map(s => 
+                `<div class="flex justify-between border-b border-neutral-200 pb-0.5"><span>${s[0]}:</span><span class="text-black font-bold">${s[1]}</span></div>`
+            ).join('');
+
+            const thumbsContainer = document.getElementById('detail-thumbs');
+            thumbsContainer.innerHTML = '';
+            data.images.forEach((img, idx) => {
+                const thumb = document.createElement('div');
+                thumb.className = `thumb-btn shrink-0 w-14 h-14 md:w-16 md:h-16 rounded overflow-hidden border-2 border-transparent opacity-40 hover:opacity-100 cursor-pointer transition-all bg-neutral-100 shadow-sm`;
+                const thumbImg = document.createElement('img');
+                thumbImg.className = 'w-full h-full object-cover';
+                thumbImg.alt = 'thumb';
+                loadFallbackImg(thumbImg, img.paths);
+                thumb.appendChild(thumbImg);
+
+                thumb.addEventListener('click', () => {
+                    currentDetailImgIdx = idx;
+                    updateDetailImage();
+                });
+                thumbsContainer.appendChild(thumb);
+            });
+
+            updateDetailImage();
+        }
+
+        function updateDetailImage() {
+            const data = projectData[currentProjectKey];
+            const imgData = data.images[currentDetailImgIdx];
+            const imgEl = document.getElementById('detail-main-img');
+
+            imgEl.style.opacity = '0.2';
+            setTimeout(() => {
+                loadFallbackImg(imgEl, imgData.paths);
+                document.getElementById('detail-img-name').textContent = imgData.title;
+                document.getElementById('detail-counter').textContent = `${currentDetailImgIdx + 1} / ${data.images.length}`;
+                imgEl.style.opacity = '1';
+
+                const thumbs = document.querySelectorAll('.thumb-btn');
+                thumbs.forEach((t, i) => {
+                    if (i === currentDetailImgIdx) {
+                        t.classList.add('active');
+                        t.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+                    } else {
+                        t.classList.remove('active');
+                    }
+                });
+            }, 100);
+        }
+
+        function prevDetailImg() {
+            const data = projectData[currentProjectKey];
+            currentDetailImgIdx = (currentDetailImgIdx - 1 + data.images.length) % data.images.length;
+            updateDetailImage();
+        }
+
+        function nextDetailImg() {
+            const data = projectData[currentProjectKey];
+            currentDetailImgIdx = (currentDetailImgIdx + 1) % data.images.length;
+            updateDetailImage();
+        }
+
+        function goHome() {
+            currentView = 'home';
+            document.getElementById('detail-view').classList.add('hidden');
+            document.getElementById('home-view').classList.remove('hidden');
+            document.querySelectorAll('.project-item').forEach(btn => btn.classList.remove('active'));
+            resetAutoPlay();
+        }
+
+        window.addEventListener('keydown', (e) => {
+            if (currentView === 'home') {
+                if (e.key === 'ArrowLeft') prevSlide();
+                if (e.key === 'ArrowRight') nextSlide();
+                if (e.key === 'Enter') handleSliderClick();
+            } else if (currentView === 'detail') {
+                if (e.key === 'ArrowLeft') prevDetailImg();
+                if (e.key === 'ArrowRight') nextDetailImg();
+                if (e.key === 'Escape') goHome();
+            }
+        });
+
+        window.addEventListener('DOMContentLoaded', () => {
+            const dotsContainer = document.getElementById('slider-dots');
+            dotsContainer.innerHTML = homeSlides.map((_, i) => 
+                `<div onclick="currentSlideIdx = ${i}; updateSlide(); resetAutoPlay();" class="slider-dot h-2 ${i === 0 ? 'w-8 bg-black' : 'w-2 bg-neutral-300'} rounded-full transition-all cursor-pointer"></div>`
+            ).join('');
+
+            updateSlide();
+            startAutoPlay();
+        });
+    </script>
+</body>
+</html>
